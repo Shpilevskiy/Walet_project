@@ -23,7 +23,10 @@ PROJECT_ROOT = os.path.abspath(
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+
+# Following approach is mostly used during deployment procedure
+# SECRET_KEY = os.environ.get('DJANGO_WALLET_SECRET_KEY')
+SECRET_KEY = 'dasdrqw rwce12e21c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -87,9 +90,13 @@ WSGI_APPLICATION = 'wallet.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'postgres',
-        'NAME': 'wallet-database',
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'USER': 'postgres',
+        # 'NAME': 'wallet-database',
+        # Rather than spinning up PostgreSQL server it'd be prefferably
+        # to use SQLite for the local development for the speed sake
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
     }
 }
 
