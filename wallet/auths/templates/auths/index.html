@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--<link rel="shortcut icon" href="bower_components/bootstrap/ico/favicon.ico" MUST LOOK>-->
+
+    <title>Wallet</title>
+
+    {% load static %}
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}"/>
+
+    <!-- Custom styles for this template -->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'auth/index.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'auth/carousel.css' %}" />
+
+
+
+
+
+
+</head>
+
+<body>
+{% load crispy_forms_tags %}
+
+<div class="container">
+    <div class="header">
+        <ul class="nav nav-pills pull-right">
+            <li class="active"><a href="#carousel" data-slide-to="0">Home</a></li>
+            <li><a id = "about" href="#carousel" data-slide-to="1">About</a></li>
+            <li><a href="#carousel" data-slide-to="2">Contact</a></li>
+        </ul>
+        <h3 class="text-muted">Welcome to your wallet</h3>
+    </div>
+</div>
+
+
+<div id="carousel" class="carousel slide container jumbotron" data-ride="carousel" data-interval="false">
+
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <li data-target="#carousel" data-slide-to="0"></li>
+        <li data-target="#carousel" data-slide-to="1"></li>
+        <li data-target="#carousel" data-slide-to="2"></li>
+    </ol>
+
+
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+
+                <div id="home" class="carousel-caption">
+                    <h1>Simple wallet, complex needs</h1>
+                    <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                    <p><a id="reg-button" class="btn btn-lg btn-success" href="#" role="button">Sign up</a> <a id="log-btn" class="btn btn-lg btn-danger" href="#" role="button">Sign in</a></p>
+                </div>
+
+                <div id="login-form" class="auth-content carousel-caption">
+                    <h1>Authorization</h1>
+
+                    <!--WORK HTML CODE-->
+                    <div class="form-group input-form">
+                        <form action="/" method='post'>
+                            <!--<input id="email" type="email" name="email" placeholder="Email (example@gmail.com)" value="{{ current_email}}" class="form-control">-->
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <!--<input id="password" type="password" name="password" placeholder="Password" class="form-control">-->
+                            <input value="Sign in" type="submit" class="btn btn-success">
+                            <!--<input id="your_name" type="text" name="your_name" value="{{ current_name }}">-->
+                        </form>
+                    </div>
+
+
+
+                    <!--<div class="form-group input-form">-->
+                        <!--<input type="email" placeholder="Email (example@gmail.com)" class="form-control">-->
+                    <!--</div>-->
+                    <!--<div class="form-group input-form">-->
+                        <!--<input type="password" placeholder="Password" class="form-control">-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<button type="submit" class="btn btn-success">Sign in</button>-->
+                    <!--</div>-->
+                </div>
+
+                <div id="registration-form" class="reg-content carousel-caption">
+                    <h1>Registration</h1>
+                    <div class="form-group">
+                        <input type="text" placeholder="Username" class="form-control input-form">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email (example@gmail.com)" class="form-control input-form">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" class="form-control input-form">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-success">Sign up</button>
+                    </div>
+                </div>
+
+
+        </div>
+        <div class="item">
+            <div class="reg-content carousel-caption">
+                <h1>Registration</h1>
+                <div class="form-group">
+                    <input type="text" placeholder="Username" class="form-control input-form">
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email (example@gmail.com)" class="form-control input-form">
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" class="form-control input-form">
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-success">Sign in</button>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>Contact</h1>
+                    <p class="lead">arioxon@gmail.com</p>
+                    <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up</a> <a class="btn btn-lg btn-danger" href="#" role="button">Sign in</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a class="left carousel-control" href="#carousel" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+
+    <a class="right carousel-control" href="#carousel" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+
+</div>
+
+
+
+
+    <div class="footer container">
+        <p>&copy; Nick 2016</p>
+    </div>
+
+ {% load static %}
+<script type="text/javascript" src="{% static 'jquery/dist/jquery.min.js' %}"> </script>
+<script type="text/javascript" src="{% static 'auth/index.js' %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>
