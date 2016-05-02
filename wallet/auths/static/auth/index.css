@@ -78,11 +78,9 @@ body {
 .auth-content {
     display: none;
     opacity: 0;
-    margin-bottom: 8%;
 }
 
 .reg-content {
     display: none;
     opacity: 0;
-    margin-bottom: 5%;
 }
