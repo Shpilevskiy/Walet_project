@@ -68,14 +68,12 @@
 
                     <!--WORK HTML CODE-->
                     <div class="form-group input-form">
-                        <form action="/" method='post'>
                             <!--<input id="email" type="email" name="email" placeholder="Email (example@gmail.com)" value="{{ current_email}}" class="form-control">-->
                             {% csrf_token %}
-                            {{ form|crispy }}
+                            {% crispy form %}
                             <!--<input id="password" type="password" name="password" placeholder="Password" class="form-control">-->
-                            <input value="Sign in" type="submit" class="btn btn-success">
+                            <!--<input value="Sign in" type="submit" class="btn btn-success">-->
                             <!--<input id="your_name" type="text" name="your_name" value="{{ current_name }}">-->
-                        </form>
                     </div>
 
 
@@ -154,7 +152,6 @@
         <p>&copy; Nick 2016</p>
     </div>
 
- {% load static %}
 <script type="text/javascript" src="{% static 'jquery/dist/jquery.min.js' %}"> </script>
 <script type="text/javascript" src="{% static 'auth/index.js' %}"></script>
 <script type="text/javascript" src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
