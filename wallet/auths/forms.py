@@ -33,15 +33,5 @@ class RegistrationForm(forms.Form):
         Field('username', placeholder='Username', css_class='form-control'),
         Field('email', placeholder='Email (example@gmail.com)', css_class='form-control'),
         Field('password', placeholder='Password', css_class='form-control'),
-        FormActions(Submit('login', 'Sign in', css_class='btn-primary'))
+        FormActions(Submit('login', 'Sign up', css_class='btn-primary'))
     )
-
-
-def clean_email(self):
-    email = self.cleaned_data['email']
-    try:
-        User._default_manager.get(email=email)
-    except User.DoesNotExist:
-        return email
-    raise forms.ValidationError('That email address has been already registered')
-

@@ -3,4 +3,4 @@ from .forms import LoginForm, RegistrationForm
 
 
 def index(request):
-    return render(request, 'auths/index.html', {'form': LoginForm()})
+    return render(request, 'auths/index.html', {'RegForm': RegistrationForm, 'LoginForm': LoginForm})

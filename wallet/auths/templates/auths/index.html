@@ -65,31 +65,17 @@
 
                 <div id="login-form" class="auth-content carousel-caption">
                     <h1>Authorization</h1>
-
-                    <!--WORK HTML CODE-->
                     <div class="form-group input-form">
-                            <!--<input id="email" type="email" name="email" placeholder="Email (example@gmail.com)" value="{{ current_email}}" class="form-control">-->
-                            {% csrf_token %}
-                            {% crispy form %}
-                            <!--<input id="password" type="password" name="password" placeholder="Password" class="form-control">-->
-                            <!--<input value="Sign in" type="submit" class="btn btn-success">-->
-                            <!--<input id="your_name" type="text" name="your_name" value="{{ current_name }}">-->
+                        {% csrf_token %}
+                        {% crispy LoginForm %}
                     </div>
                 </div>
 
                 <div id="registration-form" class="reg-content carousel-caption">
                     <h1>Registration</h1>
-                    <div class="form-group">
-                        <input type="text" placeholder="Username" class="form-control input-form">
-                    </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Email (example@gmail.com)" class="form-control input-form">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" placeholder="Password" class="form-control input-form">
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-success">Sign up</button>
+                    <div class="form-group input-form">
+                        {% csrf_token %}
+                        {% crispy RegForm %}
                     </div>
                 </div>
 
