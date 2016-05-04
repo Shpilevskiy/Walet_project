@@ -16,10 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from auths.views import index
+from auths.views import index, registration, authentication
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # We won't be able to capture /admin/ urls otherwise
     url(r'^$', index, name="home"),
+    url(r'^registration/', registration, name="log on"),
+    url(r'^authentication/', authentication, name="log in"),
 ]
