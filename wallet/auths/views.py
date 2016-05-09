@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from .forms import LoginForm, RegistrationForm
 
 
@@ -38,6 +38,3 @@ def authentication(request):
         # NEED: Return an 'invalid login' error message.
         return HttpResponseRedirect('/')
 
-
-def out(request):
-    logout(request)
