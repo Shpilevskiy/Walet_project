@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>My Wallet</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}"/>
+     <link rel="stylesheet" type="text/css" href="{% static 'mywallet/mywallet.css' %}" />
+</head>
+
+<body>
+
+
+<!--NAVBAR-->
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href=/mywallet>Simple Wallet</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav nav-right">
+                <li><a>already spent: 1040 / budget: 5000</a></li>
+                <li><a id="date-field"></a></li>
+                <li><img class="avatar-img img-circle img-responsive center-block" src="/static/mywallet/avatar.png"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!--CONTAINER-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="active"><a href="#">Main</a></li>
+                <li><a href="#">Statistic</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Log out</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main main-block">
+            <h1 class="page-header">Main information</h1>
+
+
+            <div class="col-md-6">
+                <table class="table table-responsive">
+                    <tbody>
+                    <tr><h3>Spendings</h3></tr>
+                    <tr>
+                        <td>cinema, party, other</td>
+                        <td>Visa gold (work card)</td>
+                        <td>-35.5 (USD)</td>
+                        <td>12.05.2005</td>
+                    </tr>
+                    <tr>
+                        <td>cinema, party, other</td>
+                        <td>Visa gold (work card)</td>
+                        <td>-35.5 (USD)</td>
+                        <td>12.05.2005</td>
+                    </tr>
+                    <tr>
+                        <td>cinema, party, other</td>
+                        <td>Visa gold (work card)</td>
+                        <td>-35.5 (USD)</td>
+                        <td>12.05.2005</td>
+                    </tr>
+                    <tr>
+                        <td>cinema, party, other</td>
+                        <td>Visa gold (work card)</td>
+                        <td>-35.5 (USD)</td>
+                        <td>12.05.2005</td>
+                    </tr>
+                    <tr>
+                        <td>cinema, party, other</td>
+                        <td>Visa gold (work card)</td>
+                        <td>-35.5 (USD)</td>
+                        <td>12.05.2005</td>
+                    </tr>
+                    <tr>
+                        <td>cinema, party, other</td>
+                        <td>Visa gold (work card)</td>
+                        <td>-35.5 (USD)</td>
+                        <td>12.05.2005</td>
+                    </tr>
+                    <tr>
+                        <td><a>More spending's </a></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--<div class="col-md-2 wallet-block">-->
+                <!--<h3>Visa gold (work card)</h3>-->
+                <!--<table class="table table-responsive ">-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>USD</td>-->
+                        <!--<td>5 000</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>EUR</td>-->
+                        <!--<td>8 000</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td></td>-->
+                        <!--<td>-->
+                            <!--<button class="glyphicon-plus"></button>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+
+
+            <div class="col-md-4 add-spending">
+                <h3> Add new spending </h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <!--<label class="sr-only" for="exampleInputEmail2">Email</label>-->
+                        <input type="text" class="form-control" id="category-input" placeholder="Category">
+                    </div>
+                    <div class="form-group">
+                        <!--<label class="sr-only" for="exampleInputPassword2">Пароль</label>-->
+                        <input type="text" class="form-control" id="sum-input" placeholder="Sum">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="title-input"
+                               placeholder="title or some notes about this waste">
+                    </div>
+                    <div class="form-group">
+                        <input type="date" class="form-control" id="date-input">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+
+
+
+
+
+        <div class="col-sm-9 col-md-10">
+
+
+            <div class="col-md-2 wallet-block wallet-frame">
+                <h4>Visa gold (work card) <a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>
+                <hr>
+                <p>USD <span class="pull-right">5 000</span></p>
+                <hr>
+                <p>EUR <span class="pull-right">8 000</span></p>
+                <hr>
+                <p><button class="glyphicon-plus center-block"></button></p>
+            </div>
+
+            <div id="add-button-div" class="col-md-2">
+                <div id="add-wallet-button" class="circle btn center-block"></div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="{% static 'jquery/dist/jquery.min.js' %}"> </script>
+<script type="text/javascript" src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'mywallet/mywallet.js' %}"></script>
+</body>
+</html>

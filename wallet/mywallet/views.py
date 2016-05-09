@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 
-# Create your views here.
+
+def mywallet(request):
+    if request.user.is_authenticated():
+        return render(request, 'mywallet/mywallet.html')
+    return HttpResponseRedirect('/')
