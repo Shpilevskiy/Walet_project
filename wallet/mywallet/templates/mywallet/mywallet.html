@@ -165,47 +165,21 @@
                 <p><button class="glyphicon-plus center-block"></button></p>
             </div>
 
-             <div class="col-md-2 wallet-block wallet-frame">
-                <h4>Visa gold (work card) <a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>
-                <hr>
-                <p>USD <span class="pull-right">5 000</span></p>
-                <hr>
-                <p>EUR <span class="pull-right">8 000</span></p>
-                <hr>
-                <p><button class="glyphicon-plus center-block"></button></p>
-            </div>
-             <div class="col-md-2 wallet-block wallet-frame">
-                <h4>Visa gold (work card) <a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>
-                <hr>
-                <p>USD <span class="pull-right">5 000</span></p>
-                <hr>
-                <p>EUR <span class="pull-right">8 000</span></p>
-                <hr>
-                <p><button class="glyphicon-plus center-block"></button></p>
-            </div>
-             <div class="col-md-2 wallet-block wallet-frame">
-                <h4>Visa gold (work card) <a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>
-                <hr>
-                <p>USD <span class="pull-right">5 000</span></p>
-                <hr>
-                <p>EUR <span class="pull-right">8 000</span></p>
-                <hr>
-                <p><button class="glyphicon-plus center-block"></button></p>
-            </div>
-             <div class="col-md-2 wallet-block wallet-frame">
-                <h4>Visa gold (work card) <a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>
-                <hr>
-                <p>USD <span class="pull-right">5 000</span></p>
-                <hr>
-                <p>EUR <span class="pull-right">8 000</span></p>
-                <hr>
-                <p><button class="glyphicon-plus center-block"></button></p>
-            </div>
-
             <div id="add-button-div" class="col-md-2">
                 <div id="add-wallet-button" class="circle btn center-block"></div>
             </div>
         </div>
+
+            <!--{% if messages %}-->
+                <!--&lt;!&ndash;<ul class="messages">&ndash;&gt;-->
+                <!--&lt;!&ndash;{% for message in messages %}&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li&ndash;&gt;-->
+                        <!--&lt;!&ndash;{% if message.tags %} class="{{ message.tags }}"{% endif %}>&ndash;&gt;-->
+                        <!--{{ message }}-->
+                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                <!--&lt;!&ndash;{% endfor %}&ndash;&gt;-->
+                <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+            <!--{% endif %}-->
 
         </div>
     </div>
@@ -213,6 +187,7 @@
 
 
 <script type="text/javascript" src="{% static 'jquery/dist/jquery.min.js' %}"> </script>
+<script type="text/javascript" src="{% static 'ajax/dist/ajax.min.js' %}"> </script>
 <script type="text/javascript" src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'mywallet/mywallet.js' %}"></script>
 </body>

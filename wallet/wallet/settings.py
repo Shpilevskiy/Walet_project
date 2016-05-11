@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 BOWER_INSTALLED_APPS = (
     'bootstrap',
     'jquery',
+    'ajax',
 )
 
 MIDDLEWARE_CLASSES = [
