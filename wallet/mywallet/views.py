@@ -1,12 +1,14 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpResponse
 from .models import Wallet, Currency, AccountStatement
+from .forms import AddOperationForm
 import simplejson as json
 from django.contrib.auth import logout
 
+
 def mywallet(request):
     if request.user.is_authenticated():
-        return render(request, 'mywallet/mywallet.html')
+        return render(request, 'mywallet/mywallet.html', {'AddOperationForm': AddOperationForm})
     return HttpResponseRedirect('/')
 
 

@@ -27,13 +27,14 @@ class Currency(models.Model):
 
 
 class DiffOperation(models.Model):
-    title = models.CharField(max_length=50)
-    date = models.DateField()
-    sum = models.FloatField()
     OPERATION_TYPES = (
         ('SP', 'Spending'),
         ('DP', 'Deposit')
     )
+
+    title = models.CharField(max_length=50)
+    date = models.DateField()
+    sum = models.FloatField()
     operation_type = models.CharField(max_length=2, choices=OPERATION_TYPES)
 
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)

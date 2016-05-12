@@ -14,7 +14,7 @@
 </head>
 
 <body>
-
+{% load crispy_forms_tags %}
 
 <!--NAVBAR-->
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -103,83 +103,65 @@
                 </table>
             </div>
 
-            <!--<div class="col-md-2 wallet-block">-->
-                <!--<h3>Visa gold (work card)</h3>-->
-                <!--<table class="table table-responsive ">-->
-                    <!--<tbody>-->
-                    <!--<tr>-->
-                        <!--<td>USD</td>-->
-                        <!--<td>5 000</td>-->
-                    <!--</tr>-->
-                    <!--<tr>-->
-                        <!--<td>EUR</td>-->
-                        <!--<td>8 000</td>-->
-                    <!--</tr>-->
-                    <!--<tr>-->
-                        <!--<td></td>-->
-                        <!--<td>-->
-                            <!--<button class="glyphicon-plus"></button>-->
-                        <!--</td>-->
-                    <!--</tr>-->
-                    <!--</tbody>-->
-                <!--</table>-->
-            <!--</div>-->
-
 
             <div class="col-md-4 add-spending">
                 <h3> Add new spending </h3>
-                <form class="form-horizontal" role="form">
-                    <div class="form-group">
-                        <!--<label class="sr-only" for="exampleInputEmail2">Email</label>-->
-                        <input type="text" class="form-control" id="category-input" placeholder="Category">
-                    </div>
-                    <div class="form-group">
-                        <!--<label class="sr-only" for="exampleInputPassword2">Пароль</label>-->
-                        <input type="text" class="form-control" id="sum-input" placeholder="Sum">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="title-input"
-                               placeholder="title or some notes about this waste">
-                    </div>
-                    <div class="form-group">
-                        <input type="date" class="form-control" id="date-input">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </form>
+                {% csrf_token %}
+                {% crispy AddOperationForm %}
+                <!--<form class="form-horizontal" role="form">-->
+                    <!--<div class="form-group">-->
+                        <!--&lt;!&ndash;<label class="sr-only" for="exampleInputEmail2">Email</label>&ndash;&gt;-->
+                        <!--<input type="text" class="form-control" id="category-input" placeholder="Category">-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--&lt;!&ndash;<label class="sr-only" for="exampleInputPassword2">Пароль</label>&ndash;&gt;-->
+                        <!--<input type="text" class="form-control" id="sum-input" placeholder="Sum">-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<input type="text" class="form-control" id="title-input"-->
+                               <!--placeholder="title or some notes about this waste">-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<input type="date" class="form-control" id="date-input">-->
+                    <!--</div>-->
+                    <!--<button type="submit" class="btn btn-primary">Add</button>-->
+                <!--</form>-->
             </div>
 
 
 
 
 
-        <div class="col-sm-9 col-md-10">
+            <div class="col-sm-9 col-md-10">
+
+                <!--{% if wallet_list %}-->
+                    <!--{% for wallet in wallet_list %}-->
+                        <!--<div class="col-md-2 wallet-block wallet-frame">-->
+                            <!--<h4>{{ wallet.title }}<a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>-->
+                            <!--<hr>-->
+                            <!--<p> 123<span class="pull-right"></span></p>-->
+                            <!--<hr>-->
+                            <!--&lt;!&ndash;<p>EUR <span class="pull-right">8 000</span></p>&ndash;&gt;-->
+                            <!--<p><button class="glyphicon-plus center-block"></button></p>-->
+                        <!--</div>-->
+                    <!--{% endfor %}-->
+                <!--{% else %}-->
+                <!--<div class="col-md-2 wallet-block wallet-frame">-->
+                            <!--<h4>This is example of wallet, click plus<a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>-->
+                            <!--<hr>-->
+                            <!--<p>USD <span class="pull-right">5 000</span></p>-->
+                            <!--<hr>-->
+                            <!--<p>EUR <span class="pull-right">8 000</span></p>-->
+                            <!--<hr>-->
+                            <!--<p><button class="glyphicon-plus center-block"></button></p>-->
+                        <!--</div>-->
+                <!--{% endif %}-->
 
 
-            <div class="col-md-2 wallet-block wallet-frame">
-                <h4>Visa gold (work card) <a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>
-                <hr>
-                <p>USD <span class="pull-right">5 000</span></p>
-                <hr>
-                <p>EUR <span class="pull-right">8 000</span></p>
-                <hr>
-                <p><button class="glyphicon-plus center-block"></button></p>
+                <div id="add-button-div" class="col-md-2">
+                    <div id="add-wallet-button" class="circle btn center-block"></div>
+                </div>
             </div>
-
-            <div id="add-button-div" class="col-md-2">
-                <div id="add-wallet-button" class="circle btn center-block"></div>
-            </div>
-        </div>
-
-            <!--{% if messages %}-->
-                <!--&lt;!&ndash;<ul class="messages">&ndash;&gt;-->
-                <!--&lt;!&ndash;{% for message in messages %}&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li&ndash;&gt;-->
-                        <!--&lt;!&ndash;{% if message.tags %} class="{{ message.tags }}"{% endif %}>&ndash;&gt;-->
-                        <!--{{ message }}-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;{% endfor %}&ndash;&gt;-->
-                <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-            <!--{% endif %}-->
 
         </div>
     </div>

@@ -2,8 +2,6 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout
 from crispy_forms.bootstrap import Field, FormActions
-from django.contrib.auth.models import User
-
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username', required=True)
