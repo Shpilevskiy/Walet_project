@@ -17,6 +17,21 @@ def log_out(request):
     return HttpResponseRedirect('/')
 
 
+def add_transaction(user, currency_type, name, value):
+    """Saves all data about transaction"""
+    wallet = Wallet(title=name)
+    wallet.user = user
+    wallet.save()
+
+    statement = AccountStatement(value=value)
+    statement.wallet = wallet
+    statement.save()
+
+    currency = Currency(code=currency_type)
+    currency.value = statement
+    currency.save()
+
+
 def add_wallet(request):
     if request.method == 'POST':
         if request.is_ajax():
@@ -31,26 +46,22 @@ def add_wallet(request):
                 error_msg['sum'] = 'Currency must be a numeric'
 
             if len(currency_type) != 3:
-                error_msg['type'] = 'Input correct code'
+                error_msg['type'] = 'Enter correct currency code'
 
             if name == '':
-                error_msg['name'] = 'Title cant be empty'
+                error_msg['name'] = 'Title can not be empty'
+
+            if error_msg:
+                error_msg['status'] = '400'
 
             if not error_msg:
-                wallet = Wallet(title=name)
-                wallet.user = request.user
-                wallet.save()
+                add_transaction(request.user,
+                                currency_type,
+                                name,
+                                value)
 
-                statement = AccountStatement(value=value)
-                statement.wallet = wallet
-                statement.save()
-
-                currency = Currency(code=currency_type)
-                currency.value = statement
-                currency.save()
                 error_msg['status'] = '200'
-                return HttpResponse(json.dumps(error_msg), content_type="application/json")
+            return HttpResponse(json.dumps(error_msg),
+                                content_type="application/json")
 
-            error_msg['status'] = '400'
-            return HttpResponse(json.dumps(error_msg), content_type="application/json")
     return render(request, 'mywallet/mywallet.html')

@@ -1,9 +1,9 @@
-jQuery("a").focus(
+$("a").focus(
     function(){
         this.blur();
     });
 
-var new_wallet_from =' <div id="add-new-wallet-form" class="col-md-2 wallet-block wallet-frame"> <form class="form-horizontal" role="form"> <div id="name-group" class="form-group"> <input id="new-wallet-name" type="text" class="form-control input-sm" placeholder="Wallet name"> </div> <hr> <div id="type-group" class="form-group"> <input id="new-wallet-type" type="text" class=" form-control input-sm" placeholder="Currency (USD,EUR,etc.)"> </div> <hr> <div id="sum-group" class="form-group"> <input id="new-wallet-sum" type="text" class="form-control input-sm" placeholder="Available (5000)"> </div> <hr> <p><a id="add-new-wallet-btn" class=" btn glyphicon glyphicon-ok center-block"></a></p> </form> </div>';
+var new_wallet_form =' <div id="add-new-wallet-form" class="col-md-2 wallet-block wallet-frame"> <form class="form-horizontal" role="form"> <div id="name-group" class="form-group"> <input id="new-wallet-name" type="text" class="form-control input-sm" placeholder="Wallet name"> </div> <hr> <div id="type-group" class="form-group"> <input id="new-wallet-type" type="text" class=" form-control input-sm" placeholder="Currency (USD,EUR,etc.)"> </div> <hr> <div id="sum-group" class="form-group"> <input id="new-wallet-sum" type="text" class="form-control input-sm" placeholder="Available (5000)"> </div> <hr> <p><a id="add-new-wallet-btn" class=" btn glyphicon glyphicon-ok center-block"></a></p> </form> </div>';
 
 
 function get_date() {
@@ -20,8 +20,8 @@ function get_date() {
     var day = d.getDate();
     var month = d.getMonth() + 1;
     var year = d.getFullYear();
-    var date_field = $('.nav-right #date-field');
-    date_field.append(month + "/" + day + "/" + year + " (" + weekday[d.getDay()] + ")")
+    var dateField = $('.nav-right #date-field');
+    dateField.append(month + "/" + day + "/" + year + " (" + weekday[d.getDay()] + ")")
 }
 
 get_date();
@@ -56,69 +56,76 @@ $.ajaxSetup({
     }
 });
 
+var isWalletAddFormPresent = function(){
+    return $("#add-new-wallet-form").length !== 0;
+};
+
+var successFunc = function(data){
+    if (data.status == '400') {
+
+        var nameGroup =  $("#name-group");
+        var typeGroup = $("#type-group");
+        var sumGroup =  $("#sum-group");
+
+        if(typeof data.name !== 'undefined'){
+            var nameField = $("#new-wallet-name");
+            nameField.attr("placeholder", data.name);
+            nameField.val('');
+            nameGroup.addClass("has-error");
+
+        }
+        else{
+           nameGroup.removeClass("has-error");
+           nameGroup.addClass("has-success");
+        }
+
+        if('type' in data){
+            var typeField = $("#new-wallet-type");
+            typeField.attr("placeholder", data.type);
+            typeField.val('');
+            typeGroup.addClass("has-error");
+        }
+        else{
+            typeGroup.removeClass("has-error");
+            typeGroup.addClass("has-success");
+        }
+
+        if('sum' in data){
+            var sumField = $("#new-wallet-sum");
+            sumField.attr("placeholder", data.sum);
+            sumField.val('');
+            sumGroup.addClass("has-error");
+        }
+        else {
+            sumGroup.removeClass("has-error");
+            sumGroup.addClass("has-success");
+        }
+    }
+    if(data.status == '200')
+    {
+        $("#add-new-wallet-form").remove();
+    }
+};
+
 $(function(){
     $("#add-wallet-button").click(function(){
-        if($("div").is("#add-new-wallet-form")) return 0;
-        $("#add-button-div").before(new_wallet_from);
+        if(isWalletAddFormPresent()){
+            return;
+        }
+        $("#add-button-div").before(new_wallet_form);
         $(function(){
             $("#add-new-wallet-btn").click(function(){
                 $.ajax({
                     url: "addwallet/",
                     type: "POST",
-                    data:({
+                    data: {
                         name: $("#new-wallet-name").val(),
                         type: $("#new-wallet-type").val(),
                         sum: $("#new-wallet-sum").val()
-                    }),
-                    dataType: 'json',
-                    success: function(data){
-                        if (data.status == '400') {
-
-                            var name_group =  $("#name-group");
-                            var type_group = $("#type-group");
-                            var sum_group =  $("#sum-group");
-
-                            if(typeof data['name'] !== 'undefined'){
-                                var name_field = $("#new-wallet-name");
-                                name_field.attr("placeholder", data.name);
-                                name_field.val('');
-                               name_group.addClass("has-error");
-
-                            }
-                            else{
-                               name_group.removeClass("has-error");
-                               name_group.addClass("has-success");
-                            }
-
-                            if('type' in data){
-                                var type_field = $("#new-wallet-type");
-                                type_field.attr("placeholder", data.type);
-                                type_field.val('');
-                                type_group.addClass("has-error");
-                            }
-                            else{
-                                type_group.removeClass("has-error");
-                                type_group.addClass("has-success");
-                            }
-
-                            if('sum' in data){
-                                var sum_field = $("#new-wallet-sum");
-                                sum_field.attr("placeholder", data.sum);
-                                sum_field.val('');
-                               sum_group.addClass("has-error");
-                            }
-                            else {
-                               sum_group.removeClass("has-error");
-                                sum_group.addClass("has-success");
-                            }
-                        }
-                        if(data.status == '200')
-                        {
-                            $("#add-new-wallet-form").remove();
-                        }
-                    }
-                })
-            })
+                    },
+                    dataType: 'json'})
+                .done(successFunc);
+                });
+            });
         });
-    })
 });
