@@ -65,3 +65,28 @@ def add_wallet(request):
                                 content_type="application/json")
 
     return render(request, 'mywallet/mywallet.html')
+
+
+def get_wallets(request):
+    if request.method == 'POST':
+        if request.is_ajax():
+            wallets = Wallet.objects.filter(user=request.user)
+            wallets_data = [{'title': item.title} for item in wallets]
+            return HttpResponse(json.dumps(wallets_data), content_type="application/json")
+    return render(request, 'mywallet/mywallet.html')
+
+
+def return_codes_by_wallet_title(request):
+    if request.method == 'POST':
+        if request.is_ajax():
+            title = request.POST.get('walletTitle')
+            wallet = Wallet.objects.filter(user=request.user, title=title)
+            account = AccountStatement.objects.filter(wallet=wallet)
+            codes = Currency.objects.filter(value=account)
+            codes_data = [{'code': item.code} for item in codes]
+            return HttpResponse(json.dumps(codes_data), content_type="application/json")
+    return render(request, 'mywallet/mywallet.html')
+
+
+def add_operation(request):
+    form = AddOperationForm(request.POST or None)

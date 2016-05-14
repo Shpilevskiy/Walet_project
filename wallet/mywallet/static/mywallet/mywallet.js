@@ -6,7 +6,7 @@ $("a").focus(
 var new_wallet_form =' <div id="add-new-wallet-form" class="col-md-2 wallet-block wallet-frame"> <form class="form-horizontal" role="form"> <div id="name-group" class="form-group"> <input id="new-wallet-name" type="text" class="form-control input-sm" placeholder="Wallet name"> </div> <hr> <div id="type-group" class="form-group"> <input id="new-wallet-type" type="text" class=" form-control input-sm" placeholder="Currency (USD,EUR,etc.)"> </div> <hr> <div id="sum-group" class="form-group"> <input id="new-wallet-sum" type="text" class="form-control input-sm" placeholder="Available (5000)"> </div> <hr> <p><a id="add-new-wallet-btn" class=" btn glyphicon glyphicon-ok center-block"></a></p> </form> </div>';
 
 
-function get_date() {
+$(document).ready(function () {
     var weekday=new Array(7);
     weekday[0]="Sunday";
     weekday[1]="Monday";
@@ -22,9 +22,7 @@ function get_date() {
     var year = d.getFullYear();
     var dateField = $('.nav-right #date-field');
     dateField.append(month + "/" + day + "/" + year + " (" + weekday[d.getDay()] + ")")
-}
-
-get_date();
+});
 
 function getCookie(name) {
     var cookieValue = null;
@@ -60,7 +58,7 @@ var isWalletAddFormPresent = function(){
     return $("#add-new-wallet-form").length !== 0;
 };
 
-var successFunc = function(data){
+var verifyAddWalletFields = function(data){
     if (data.status == '400') {
 
         var nameGroup =  $("#name-group");
@@ -124,8 +122,54 @@ $(function(){
                         sum: $("#new-wallet-sum").val()
                     },
                     dataType: 'json'})
-                .done(successFunc);
+                .done(verifyAddWalletFields);
                 });
             });
         });
+});
+
+$(document).ready(function () {
+    $.ajax({
+        url: "get-wallets/",
+        type: "POST",
+        dataType: 'json',
+        success: function (data) {
+            var selectWallets = $("#id_wallets");
+           $.each(data, function (iter, value) {
+               selectWallets.append( $('<option value='+iter+'>'+value.title+'</option>'));
+           });
+            var title = selectWallets.find(":selected").text();
+            getSelectWalletCodes(title);
+        }
+    })
+});
+
+// var cleanSelect = function (element) {
+//     element.empty()
+// };
+
+var getSelectWalletCodes = function (title) {
+    $.ajax({
+            url: "get-codes-by-wallet-title/",
+            type: "POST",
+            data: {
+                walletTitle: title
+            },
+            dataType: 'json',
+            success: function (data) {
+                var code = $("#id_code");
+                code.empty();
+           $.each(data, function (iter, value) {
+               code.append( $('<option value='+iter+'>'+value.code+'</option>'));
+           });
+            }
+        })
+};
+
+$(function () {
+   var info = $("#id_wallets");
+    info.click(function () {
+        var title = info.find(":selected").text();
+        getSelectWalletCodes(title);
+    });
 });
