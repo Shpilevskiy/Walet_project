@@ -102,6 +102,8 @@ var verifyAddWalletFields = function(data){
     if(data.status == '200')
     {
         $("#add-new-wallet-form").remove();
+        refreshWallets();
+        getWalletsTitles();
     }
 };
 
@@ -128,25 +130,23 @@ $(function(){
         });
 });
 
-$(document).ready(function () {
+var getWalletsTitles = function () {
     $.ajax({
-        url: "get-wallets/",
+        url: "get-wallets-titles/",
         type: "POST",
         dataType: 'json',
         success: function (data) {
             var selectWallets = $("#id_wallets");
            $.each(data, function (iter, value) {
-               selectWallets.append( $('<option value='+iter+'>'+value.title+'</option>'));
+               selectWallets.append( $('<option value='+value.title+'>'+value.title+'</option>'));
            });
             var title = selectWallets.find(":selected").text();
             getSelectWalletCodes(title);
         }
     })
-});
+};
 
-// var cleanSelect = function (element) {
-//     element.empty()
-// };
+$(document).ready(getWalletsTitles());
 
 var getSelectWalletCodes = function (title) {
     $.ajax({
@@ -160,11 +160,12 @@ var getSelectWalletCodes = function (title) {
                 var code = $("#id_code");
                 code.empty();
            $.each(data, function (iter, value) {
-               code.append( $('<option value='+iter+'>'+value.code+'</option>'));
+               code.append( $("<option value="+iter+">"+value+"</option>"));
            });
             }
         })
 };
+
 
 $(function () {
    var info = $("#id_wallets");
@@ -173,3 +174,61 @@ $(function () {
         getSelectWalletCodes(title);
     });
 });
+
+
+
+
+
+String.prototype.trimAll=function()
+{
+  var r=/\s+/g;
+  return this.replace(r,'');
+};
+
+var createWalletDiv = function (title) {
+    var div = document.createElement("div");
+    var walletDivId = ("id-wallet-" + title).trimAll();
+    div.id= walletDivId;
+    $("#add-button-div").before(div);
+    div = $("#"+walletDivId);
+    div.addClass("col-md-2 wallet-block wallet-frame");
+
+    div.append('<h4>'+title+'<a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>');
+};
+
+var fillWallet = function (title, currencyCode, value) {
+    var walletDivId = ("id-wallet-" + title).trimAll();
+    var div = $("#"+walletDivId);
+    div.append('<hr>');
+    div.append("<p>"+currencyCode+'<span class="pull-right">'+value+'</span>');
+};
+
+var addWalletsToHtml = function (json_data) {
+          $.each(json_data, function (title, element) {
+              createWalletDiv(title);
+              $.each(element, function (value, code) {
+                  fillWallet(title, code, value);
+              })
+          });
+};
+
+var refreshWallets = function () {
+    var wallet = $(".wallet-block");
+    wallet.remove();
+    getAllWallets();
+    var select = $("#id_wallets");
+    select.empty();
+};
+
+var getAllWallets = function () {
+  $.ajax({
+      url:"get-all-wallets/",
+      type: "POST",
+      dataType: "json",
+      success: function (data) {
+          addWalletsToHtml(data)
+      }
+  })
+};
+
+$(document).ready(getAllWallets());

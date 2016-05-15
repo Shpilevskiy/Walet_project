@@ -108,6 +108,7 @@
                 <h3><a>Spending</a> / <a>Incom</a> </h3>
                 {% csrf_token %}
                 {% crispy AddOperationForm %}
+
                 <!--<form class="form-horizontal" role="form">-->
                     <!--<div class="form-group">-->
                         <!--&lt;!&ndash;<label class="sr-only" for="exampleInputEmail2">Email</label>&ndash;&gt;-->
@@ -134,30 +135,6 @@
 
             <div class="col-sm-9 col-md-10">
 
-                <!--{% if wallet_list %}-->
-                    <!--{% for wallet in wallet_list %}-->
-                        <!--<div class="col-md-2 wallet-block wallet-frame">-->
-                            <!--<h4>{{ wallet.title }}<a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>-->
-                            <!--<hr>-->
-                            <!--<p> 123<span class="pull-right"></span></p>-->
-                            <!--<hr>-->
-                            <!--&lt;!&ndash;<p>EUR <span class="pull-right">8 000</span></p>&ndash;&gt;-->
-                            <!--<p><button class="glyphicon-plus center-block"></button></p>-->
-                        <!--</div>-->
-                    <!--{% endfor %}-->
-                <!--{% else %}-->
-                <!--<div class="col-md-2 wallet-block wallet-frame">-->
-                            <!--<h4>This is example of wallet, click plus<a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>-->
-                            <!--<hr>-->
-                            <!--<p>USD <span class="pull-right">5 000</span></p>-->
-                            <!--<hr>-->
-                            <!--<p>EUR <span class="pull-right">8 000</span></p>-->
-                            <!--<hr>-->
-                            <!--<p><button class="glyphicon-plus center-block"></button></p>-->
-                        <!--</div>-->
-                <!--{% endif %}-->
-
-
                 <div id="add-button-div" class="col-md-2">
                     <div id="add-wallet-button" class="circle btn center-block"></div>
                 </div>
@@ -172,5 +149,6 @@
 <script type="text/javascript" src="{% static 'ajax/dist/ajax.min.js' %}"> </script>
 <script type="text/javascript" src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'mywallet/mywallet.js' %}"></script>
+<script type="text/javascript" src="{% static 'transparency/dist/transparency.min.js' %}"></script>
 </body>
 </html>
