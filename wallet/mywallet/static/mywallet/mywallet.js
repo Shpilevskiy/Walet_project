@@ -3,7 +3,7 @@ $("a").focus(
         this.blur();
     });
 
-var new_wallet_form =' <div id="add-new-wallet-form" class="col-md-2 wallet-block wallet-frame"> <form class="form-horizontal" role="form"> <div id="name-group" class="form-group"> <input id="new-wallet-name" type="text" class="form-control input-sm" placeholder="Wallet name"> </div> <hr> <div id="type-group" class="form-group"> <input id="new-wallet-type" type="text" class=" form-control input-sm" placeholder="Currency (USD,EUR,etc.)"> </div> <hr> <div id="sum-group" class="form-group"> <input id="new-wallet-sum" type="text" class="form-control input-sm" placeholder="Available (5000)"> </div> <hr> <p><a id="add-new-wallet-btn" class=" btn glyphicon glyphicon-ok center-block"></a></p> </form> </div>';
+var newWalletForm =' <div id="add-new-wallet-form" class="col-md-2 wallet-block wallet-frame disabled"> <form class="form-horizontal" role="form"> <div id="name-group" class="form-group"> <input id="new-wallet-name" type="text" class="form-control input-sm" placeholder="Wallet name"> </div> <hr> <div id="type-group" class="form-group"> <input id="new-wallet-type" type="text" class=" form-control input-sm" placeholder="Currency (USD,EUR,etc.)"> </div> <hr> <div id="sum-group" class="form-group"> <input id="new-wallet-sum" type="text" class="form-control input-sm" placeholder="Available (5000)"> </div> <hr> <p><a id="add-new-wallet-btn" class=" btn glyphicon glyphicon-ok center-block"></a></p> </form> </div>';
 
 
 $(document).ready(function () {
@@ -108,11 +108,13 @@ var verifyAddWalletFields = function(data){
 };
 
 $(function(){
-    $("#add-wallet-button").click(function(){
+    var button = $("#add-wallet-button");
+        button.click(function(){
         if(isWalletAddFormPresent()){
             return;
         }
-        $("#add-button-div").before(new_wallet_form);
+        $("#add-button-div").before(newWalletForm);
+        showBlock($("#add-new-wallet-form"));
         $(function(){
             $("#add-new-wallet-btn").click(function(){
                 $.ajax({
@@ -176,8 +178,19 @@ $(function () {
 });
 
 
+var hideBlock = function (block) {
+    block.animate({
+        opacity: 0
+    });
+    block.hide();
+};
 
-
+var showBlock = function (block) {
+  block.show();
+  block.animate({
+      opacity: 1
+  });
+};
 
 String.prototype.trimAll=function()
 {
@@ -185,22 +198,26 @@ String.prototype.trimAll=function()
   return this.replace(r,'');
 };
 
+ // <!--<p><button class="glyphicon-plus center-block"></button></p>-->
+
 var createWalletDiv = function (title) {
     var div = document.createElement("div");
     var walletDivId = ("id-wallet-" + title).trimAll();
     div.id= walletDivId;
     $("#add-button-div").before(div);
     div = $("#"+walletDivId);
-    div.addClass("col-md-2 wallet-block wallet-frame");
-
+    div.addClass("col-md-2 wallet-block wallet-frame disabled");
     div.append('<h4>'+title+'<a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>');
+    div.append('<p><button class="glyphicon-plus center-block"></button></p>');
 };
 
 var fillWallet = function (title, currencyCode, value) {
     var walletDivId = ("id-wallet-" + title).trimAll();
     var div = $("#"+walletDivId);
-    div.append('<hr>');
-    div.append("<p>"+currencyCode+'<span class="pull-right">'+value+'</span>');
+    var div_button = $("#"+walletDivId +" .glyphicon-plus");
+    div_button.before('<hr>');
+    div_button.before("<p>"+currencyCode+'<span class="pull-right">'+value+'</span>');
+    showBlock(div);
 };
 
 var addWalletsToHtml = function (json_data) {
@@ -214,6 +231,7 @@ var addWalletsToHtml = function (json_data) {
 
 var refreshWallets = function () {
     var wallet = $(".wallet-block");
+    hideBlock(wallet);
     wallet.remove();
     getAllWallets();
     var select = $("#id_wallets");
