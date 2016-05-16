@@ -57,50 +57,67 @@
                 <table class="table table-responsive">
                     <tbody>
                     <tr><h3>Operations</h3></tr>
+                    {% for operation in operations %}
                     <tr>
-                        <td>cinema, party, other</td>
-                        <td>Visa gold (work card)</td>
-                        <td>-35.5 (USD)</td>
-                        <td>12.05.2005</td>
+                        <td>{{operation.title}}</td>
+                        <td>{{operation.wallet_title}}</td>
+                        <td>{%if operation.operation_type == 'DP' %}+{%endif%}{%if operation.operation_type == 'SP' %}- {%endif%}{{operation.sum}} ({{operation.currency}})</td>
+                        <td>{{operation.date}}</td>
                     </tr>
-                    <tr>
-                        <td>cinema, party, other</td>
-                        <td>Visa gold (work card)</td>
-                        <td>-35.5 (USD)</td>
-                        <td>12.05.2005</td>
-                    </tr>
-                    <tr>
-                        <td>cinema, party, other</td>
-                        <td>Visa gold (work card)</td>
-                        <td>-35.5 (USD)</td>
-                        <td>12.05.2005</td>
-                    </tr>
-                    <tr>
-                        <td>cinema, party, other</td>
-                        <td>Visa gold (work card)</td>
-                        <td>-35.5 (USD)</td>
-                        <td>12.05.2005</td>
-                    </tr>
-                    <tr>
-                        <td>cinema, party, other</td>
-                        <td>Visa gold (work card)</td>
-                        <td>-35.5 (USD)</td>
-                        <td>12.05.2005</td>
-                    </tr>
-                    <tr>
-                        <td>cinema, party, other</td>
-                        <td>Visa gold (work card)</td>
-                        <td>-35.5 (USD)</td>
-                        <td>12.05.2005</td>
-                    </tr>
-                    <tr>
-                        <td><a>More spending's </a></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                    {% endfor %}
+                    <!--<tr>-->
+                        <!--<td>cinema, party, other</td>-->
+                        <!--<td>Visa gold (work card)</td>-->
+                        <!--<td>-35.5 (USD)</td>-->
+                        <!--<td>12.05.2005</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>cinema, party, other</td>-->
+                        <!--<td>Visa gold (work card)</td>-->
+                        <!--<td>-35.5 (USD)</td>-->
+                        <!--<td>12.05.2005</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>cinema, party, other</td>-->
+                        <!--<td>Visa gold (work card)</td>-->
+                        <!--<td>-35.5 (USD)</td>-->
+                        <!--<td>12.05.2005</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>cinema, party, other</td>-->
+                        <!--<td>Visa gold (work card)</td>-->
+                        <!--<td>-35.5 (USD)</td>-->
+                        <!--<td>12.05.2005</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>cinema, party, other</td>-->
+                        <!--<td>Visa gold (work card)</td>-->
+                        <!--<td>-35.5 (USD)</td>-->
+                        <!--<td>12.05.2005</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td><a>More spending's </a></td>-->
+                        <!--<td></td>-->
+                        <!--<td></td>-->
+                        <!--<td></td>-->
+                    <!--</tr>-->
                     </tbody>
                 </table>
+                 <div>
+                        <span class="step-links">
+                            {% if operations.has_previous %}
+                                <a href="?page={{ operations.previous_page_number }}">previous</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Page {{ operations.number }} of {{ operations.paginator.num_pages }}.
+                            </span>
+
+                            {% if operations.has_next %}
+                                <a href="?page={{ operations.next_page_number }}">next</a>
+                            {% endif %}
+                        </span>
+                    </div>
             </div>
 
 

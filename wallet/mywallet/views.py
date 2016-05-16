@@ -7,10 +7,25 @@ import simplejson as json
 from django.contrib.auth import logout
 from datetime import datetime
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render
 
 def mywallet(request):
     if request.user.is_authenticated():
-        return render(request, 'mywallet/mywallet.html')
+        operation_list = DiffOperation.objects.filter(user=request.user)
+        paginator = Paginator(operation_list, 6)
+
+        page = request.GET.get('page')
+        try:
+             operations = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            operations = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            operations = paginator.page(paginator.num_pages)
+
+        return render(request, 'mywallet/mywallet.html', {'operations': operations})
     return HttpResponseRedirect('/')
 
 
@@ -89,7 +104,8 @@ def add_new_operation(request):
             date = request.POST.get('date')
             select_value = request.POST.get('select_value')
 
-            error_msg = validate_add_new_operation_data(operation_type, operation_title, operation_value, date)
+            error_msg = validate_add_new_operation_data(operation_type, operation_title, operation_value,
+                                                        date, request, wallet_title)
 
             if not error_msg:
                 wallet = Wallet.objects.get(user=request.user, title=wallet_title)
@@ -102,6 +118,8 @@ def add_new_operation(request):
                 new_operation = DiffOperation(title=operation_title, date=date,
                                               sum=operation_value, operation_type=operation_type)
                 new_operation.currency = currency
+                new_operation.user = request.user
+                new_operation.wallet_title = wallet_title
                 new_operation.save()
                 if operation_type == 'SP':
                     account.value -= float(operation_value)
@@ -116,7 +134,7 @@ def add_new_operation(request):
     return HttpResponseRedirect('/')
 
 
-def validate_add_new_operation_data(operation_type, operation_title, operation_value, date):
+def validate_add_new_operation_data(operation_type, operation_title, operation_value, date, request, wallet_title):
     error_msg = {}
 
     try:
@@ -135,6 +153,10 @@ def validate_add_new_operation_data(operation_type, operation_title, operation_v
         datetime.strptime(date, "%Y-%m-%d")
     except ValueError: #find correct exception
         error_msg['date'] = 'Wrong date'
+
+    wallet = Wallet.objects.filter(user=request.user, title=wallet_title)
+    if not wallet:
+        error_msg['wallet'] = 'Wrong wallet title'
 
     return error_msg
 

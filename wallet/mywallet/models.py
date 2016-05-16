@@ -37,7 +37,9 @@ class DiffOperation(models.Model):
     date = models.DateField()
     sum = models.FloatField()
     operation_type = models.CharField(max_length=2, choices=OPERATION_TYPES)
-
+    wallet_title = models.CharField(max_length=20, choices=OPERATION_TYPES)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE, )
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
 
     def __str__(self):
