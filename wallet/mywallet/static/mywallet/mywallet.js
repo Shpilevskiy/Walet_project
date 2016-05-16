@@ -69,6 +69,12 @@ var makeFieldOk = function (block) {
     block.addClass("has-success");
 };
 
+var cleanBlock = function (block, field, placeholder) {
+    block.removeClass("has-error has-success");
+    field.val('');
+    field.attr("placeholder", placeholder);
+};
+
 var verifyAddWalletFields = function(data){
     if (data.status == '400') {
 
@@ -194,6 +200,83 @@ var showBlock = function (block) {
   });
 };
 
+
+
+var addNewOperation = function () {
+    var button = $("#spending-button");
+    var operationType = "SP";
+
+    var sumAddon = $("#sum-addon");
+    var spendingButton = $("#operation-spending-button");
+    var incomButton = $("#operation-incom-button");
+
+    spendingButton.click(function () {
+        sumAddon.text("-");
+        operationType = "SP";
+    });
+
+    incomButton.click(function () {
+        sumAddon.text("+");
+        operationType = "DP";
+    });
+
+    button.click(function () {
+    var title = $("#spending-title-input");
+    var titleForm = $("#spending-title-form");
+    var sum = $("#spending-sum-input");
+    var sumForm = $("#spending-sum-form");
+    var wallet = $("#id_wallets");
+    var code = $("#id_code");
+    var date = $("#spending-date-input");
+    var dateForm =$("#spending-date-form");
+        $.ajax({
+            url:"add-new-operation/",
+            type:"POST",
+            dataType:"json",
+            data: {
+                type: operationType,
+                title: title.val(),
+                sum: sum.val(),
+                wallet: wallet.find(":selected").text(),
+                code: code.find(":selected").text(),
+                select_value: code.find(":selected").val(),
+                date: date.val()
+            },
+            success: function (data) {
+                console.log(data);
+                 if('sum' in data){
+                     makeFieldBad(sumForm, sum, data.sum)
+                 }
+                 else{
+                     makeFieldOk(sumForm)
+                 }
+
+                if('name' in data){
+                    makeFieldBad(titleForm, title, data.name)
+                }
+                else{
+                    makeFieldOk(titleForm)
+                }
+                if('date' in data){
+                    makeFieldBad(dateForm, date, data.date)
+                }
+                else{
+                    makeFieldOk(dateForm)
+                }
+                if(data.status == '200')
+                {
+                    refreshWallets();
+                    cleanBlock(sumForm,sum, "Sum");
+                    cleanBlock(titleForm,title, "Title");
+                    cleanBlock(dateForm, date, "");
+                }
+            }
+        })
+    })
+};
+
+addNewOperation();
+
 String.prototype.trimAll=function()
 {
   var r=/\s+/g;
@@ -229,7 +312,6 @@ var addWalletCurrency = function () {
                   sum: sum
                 },
                 success: function (data) {
-                    console.log(data);
                     if('type' in data){
                        makeFieldBad(codeForm.parent(), codeForm, data.type)
                     }

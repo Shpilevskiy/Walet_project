@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^logout/', views.log_out, name="log out"),
     url(r'^addwallet/', views.add_wallet, name="add wallet"),
     url(r'^add-new-currency/', views.add_new_currency, name='add new currency'),
+    url(r'^add-new-operation/', views.add_new_operation, name='add new operation'),
     url(r'^get-codes-by-wallet-title/', views.return_codes_by_wallet_title, name="return code by wallet title"),
     url(r'^get-wallets-titles/', views.get_wallets_titles, name="get wallets-titles"),
     url(r'^add-operation/', views.add_operation, name="add operation"),

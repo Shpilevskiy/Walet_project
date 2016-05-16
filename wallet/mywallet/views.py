@@ -1,15 +1,16 @@
 from django.shortcuts import render, HttpResponseRedirect, RequestContext
 from django.http import HttpResponse
 from crispy_forms.utils import render_crispy_form
-from .models import Wallet, Currency, AccountStatement
+from .models import Wallet, Currency, AccountStatement, DiffOperation
 from .forms import AddOperationForm
 import simplejson as json
 from django.contrib.auth import logout
+from datetime import datetime
 
 
 def mywallet(request):
     if request.user.is_authenticated():
-        return render(request, 'mywallet/mywallet.html', {'AddOperationForm': AddOperationForm})
+        return render(request, 'mywallet/mywallet.html')
     return HttpResponseRedirect('/')
 
 
@@ -77,6 +78,67 @@ def add_wallet(request):
     return HttpResponseRedirect('/')
 
 
+def add_new_operation(request):
+    if request.method == 'POST':
+        if request.is_ajax():
+            operation_type = request.POST.get('type')
+            operation_title = request.POST.get('title')
+            operation_value = request.POST.get('sum')
+            wallet_title = request.POST.get('wallet')
+            code = request.POST.get('code')
+            date = request.POST.get('date')
+            select_value = request.POST.get('select_value')
+
+            error_msg = validate_add_new_operation_data(operation_type, operation_title, operation_value, date)
+
+            if not error_msg:
+                wallet = Wallet.objects.get(user=request.user, title=wallet_title)
+                account = AccountStatement.objects.get(wallet=wallet, value=select_value)
+                currency = Currency.objects.get(value=account, code=code)
+
+                print(operation_type, operation_title, operation_value, wallet_title, code, date,)
+                print("!!!",wallet,"!!",account,"!!",currency)
+
+                new_operation = DiffOperation(title=operation_title, date=date,
+                                              sum=operation_value, operation_type=operation_type)
+                new_operation.currency = currency
+                new_operation.save()
+                if operation_type == 'SP':
+                    account.value -= float(operation_value)
+                else:
+                    account.value += float(operation_value)
+                account.save()
+                error_msg['status'] = '200'
+
+            return HttpResponse(json.dumps(error_msg),
+                                content_type="application/json")
+
+    return HttpResponseRedirect('/')
+
+
+def validate_add_new_operation_data(operation_type, operation_title, operation_value, date):
+    error_msg = {}
+
+    try:
+        float(operation_value)
+    except ValueError:
+        error_msg['sum'] = 'Currency must be a numeric'
+
+    if operation_title == '':
+        error_msg['name'] = 'Title can not be empty'
+
+    if operation_type != 'SP' and operation_type != 'DP':
+        error_msg['type'] = 'Wrong type operation'
+
+    try:
+        print(date)
+        datetime.strptime(date, "%Y-%m-%d")
+    except ValueError: #find correct exception
+        error_msg['date'] = 'Wrong date'
+
+    return error_msg
+
+
 def validate_new_currency_data(title, code, value, request):
     error_msg = {}
 
@@ -92,7 +154,6 @@ def validate_new_currency_data(title, code, value, request):
     accounts = AccountStatement.objects.filter(wallet=wallet)
     for account in accounts:
         if Currency.objects.filter(value=account, code=code):
-            print("!!!!!")
             error_msg['type'] = 'You are already have this currency'
 
     if error_msg:

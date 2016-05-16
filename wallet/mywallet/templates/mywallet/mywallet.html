@@ -105,17 +105,15 @@
 
 
             <div class="col-md-4 add-spending">
-                <h3><a>Spending</a> / <a>Incom</a> </h3>
-                <!--{% csrf_token %}-->
-                <!--{% crispy AddOperationForm %}-->
+                <h3><a id="operation-spending-button" class="btn btn-lg">Spending</a>/<a id="operation-incom-button" class="btn btn-lg">Income</a> </h3>
 
                 <form id="spending-form" class="form-horizontal form-group" role="form">
                     <div id = "spending-title-form" class="form-group">
-                        <input type="text" class="form-control" id="category-input" placeholder="Title">
+                        <input type="text" class="form-control" id="spending-title-input" placeholder="Title">
                     </div>
                     <div id = "spending-sum-form" class="form-group input-group">
-                        <span class="input-group-addon">-</span>
-                        <input type="text" class="form-control" id="sum-input" placeholder="Sum">
+                        <span id="sum-addon" class="input-group-addon">-</span>
+                        <input type="text" class="form-control" id="spending-sum-input" placeholder="Sum">
                     </div>
                     <div id="div_id_wallets" class="form-group">
                         <div class="controls ">
@@ -128,7 +126,7 @@
                         </div>
                     </div>
                     <div id="spending-date-form" class="form-group">
-                        <input type="date" class="form-control" id="date-input">
+                        <input type="date" class="form-control" id="spending-date-input">
                     </div>
                     <a id="spending-button" class="btn btn-primary">Add</a>
                 </form>
