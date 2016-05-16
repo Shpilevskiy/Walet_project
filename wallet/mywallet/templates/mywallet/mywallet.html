@@ -106,27 +106,33 @@
 
             <div class="col-md-4 add-spending">
                 <h3><a>Spending</a> / <a>Incom</a> </h3>
-                {% csrf_token %}
-                {% crispy AddOperationForm %}
+                <!--{% csrf_token %}-->
+                <!--{% crispy AddOperationForm %}-->
 
-                <!--<form class="form-horizontal" role="form">-->
-                    <!--<div class="form-group">-->
-                        <!--&lt;!&ndash;<label class="sr-only" for="exampleInputEmail2">Email</label>&ndash;&gt;-->
-                        <!--<input type="text" class="form-control" id="category-input" placeholder="Category">-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--&lt;!&ndash;<label class="sr-only" for="exampleInputPassword2">Пароль</label>&ndash;&gt;-->
-                        <!--<input type="text" class="form-control" id="sum-input" placeholder="Sum">-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<input type="text" class="form-control" id="title-input"-->
-                               <!--placeholder="title or some notes about this waste">-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<input type="date" class="form-control" id="date-input">-->
-                    <!--</div>-->
-                    <!--<button type="submit" class="btn btn-primary">Add</button>-->
-                <!--</form>-->
+                <form id="spending-form" class="form-horizontal form-group" role="form">
+                    <div id = "spending-title-form" class="form-group">
+                        <input type="text" class="form-control" id="category-input" placeholder="Title">
+                    </div>
+                    <div id = "spending-sum-form" class="form-group input-group">
+                        <span class="input-group-addon">-</span>
+                        <input type="text" class="form-control" id="sum-input" placeholder="Sum">
+                    </div>
+                    <div id="div_id_wallets" class="form-group">
+                        <div class="controls ">
+                            <select class="form-control select form-control" id="id_wallets" name="wallets"></select>
+                        </div>
+                    </div>
+                    <div id="div_id_code" class="form-group">
+                        <div class="controls ">
+                            <select class="form-control select form-control" id="id_code" name="code"></select>
+                        </div>
+                    </div>
+                    <div id="spending-date-form" class="form-group">
+                        <input type="date" class="form-control" id="date-input">
+                    </div>
+                    <a id="spending-button" class="btn btn-primary">Add</a>
+                </form>
+
             </div>
 
 

@@ -58,45 +58,48 @@ var isWalletAddFormPresent = function(){
     return $("#add-new-wallet-form").length !== 0;
 };
 
+var makeFieldBad = function (block,field, text) {
+    field.attr("placeholder", text);
+    field.val('');
+    block.addClass("has-error");
+};
+
+var makeFieldOk = function (block) {
+    block.removeClass("has-error");
+    block.addClass("has-success");
+};
+
 var verifyAddWalletFields = function(data){
     if (data.status == '400') {
 
         var nameGroup =  $("#name-group");
+        var nameField = $("#new-wallet-name");
+
         var typeGroup = $("#type-group");
+        var typeField = $("#new-wallet-type");
+
         var sumGroup =  $("#sum-group");
+        var sumField = $("#new-wallet-sum");
 
         if(typeof data.name !== 'undefined'){
-            var nameField = $("#new-wallet-name");
-            nameField.attr("placeholder", data.name);
-            nameField.val('');
-            nameGroup.addClass("has-error");
-
+            makeFieldBad(nameGroup,nameField,data.name)
         }
         else{
-           nameGroup.removeClass("has-error");
-           nameGroup.addClass("has-success");
+           makeFieldOk(nameGroup)
         }
 
         if('type' in data){
-            var typeField = $("#new-wallet-type");
-            typeField.attr("placeholder", data.type);
-            typeField.val('');
-            typeGroup.addClass("has-error");
+            makeFieldBad(typeGroup,typeField,data.type)
         }
         else{
-            typeGroup.removeClass("has-error");
-            typeGroup.addClass("has-success");
+           makeFieldOk(typeGroup)
         }
 
         if('sum' in data){
-            var sumField = $("#new-wallet-sum");
-            sumField.attr("placeholder", data.sum);
-            sumField.val('');
-            sumGroup.addClass("has-error");
+            makeFieldBad(sumGroup,sumField,data.sum)
         }
         else {
-            sumGroup.removeClass("has-error");
-            sumGroup.addClass("has-success");
+           makeFieldOk(sumGroup)
         }
     }
     if(data.status == '200')
@@ -197,18 +200,6 @@ String.prototype.trimAll=function()
   return this.replace(r,'');
 };
 
-
-
-var makeFieldBad = function (block,field, text) {
-    field.attr("placeholder", text);
-    field.val('');
-    block.addClass("has-error");
-};
-
-var makeFieldOk = function (block) {
-    block.removeClass("has-error");
-    block.addClass("has-success");
-};
 
 var addWalletCurrency = function () {
     var addButton = $(".wallet-block .glyphicon-plus");
