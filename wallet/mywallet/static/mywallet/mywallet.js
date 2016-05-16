@@ -103,7 +103,6 @@ var verifyAddWalletFields = function(data){
     {
         $("#add-new-wallet-form").remove();
         refreshWallets();
-        getWalletsTitles();
     }
 };
 
@@ -198,7 +197,71 @@ String.prototype.trimAll=function()
   return this.replace(r,'');
 };
 
- // <!--<p><button class="glyphicon-plus center-block"></button></p>-->
+
+
+var makeFieldBad = function (block,field, text) {
+    field.attr("placeholder", text);
+    field.val('');
+    block.addClass("has-error");
+};
+
+var makeFieldOk = function (block) {
+    block.removeClass("has-error");
+    block.addClass("has-success");
+};
+
+var addWalletCurrency = function () {
+    var addButton = $(".wallet-block .glyphicon-plus");
+    addButton.click(function () {
+        var btn = $(addButton[addButton.index(this)]);
+        var form = btn.siblings(".disabled");
+        var titleForm = btn.siblings("h4");
+        showBlock(form);
+        hideBlock(btn);
+        var submitBtn = form.find('p:last');
+
+        var codeForm = form.find('#add-currency-input');
+        var sumForm = form.find('#add-value-input');
+
+        var title = titleForm.text();
+
+        submitBtn.click(function () {
+            var code = codeForm.val();
+            var sum = sumForm.val();
+            $.ajax({
+                url:"add-new-currency/",
+                type: "POST",
+                dataType: 'json',
+                data: {
+                  title: title,
+                  code: code,
+                  sum: sum
+                },
+                success: function (data) {
+                    console.log(data);
+                    if('type' in data){
+                       makeFieldBad(codeForm.parent(), codeForm, data.type)
+                    }
+                    else{
+                        makeFieldOk(codeForm.parent())
+                    }
+
+                    if('sum' in data){
+                       makeFieldBad(sumForm.parent(), sumForm, data.sum)
+                    }
+                    else{
+                        makeFieldOk(sumForm.parent())
+                    }
+                    if(data.status == '200')
+                    {
+                        refreshWallets();
+                    }
+                }
+            })
+        })
+    })
+};
+
 
 var createWalletDiv = function (title) {
     var div = document.createElement("div");
@@ -207,16 +270,18 @@ var createWalletDiv = function (title) {
     $("#add-button-div").before(div);
     div = $("#"+walletDivId);
     div.addClass("col-md-2 wallet-block wallet-frame disabled");
-    div.append('<h4>'+title+'<a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>');
-    div.append('<p><button class="glyphicon-plus center-block"></button></p>');
+    div.append('<h4 id="wallet-title">'+title+'<a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>');
+    div.append('<hr>');
+    div.append('<div id="new-currency-"'+title+' class="form-group disabled">  <p> <input id="add-currency-input" type="text" class=" form-control input-sm" placeholder="Currency (USD,EUR,etc.)"> </p> <p><input id="add-value-input" type="text" class=" form-control input-sm" placeholder="Value"> </p> <p><a class="btn-padding btn  glyphicon glyphicon-ok center-block"></a></p> </div>');
+    div.append(' <a class=" btn glyphicon glyphicon-plus center-block"></a>');
 };
 
 var fillWallet = function (title, currencyCode, value) {
     var walletDivId = ("id-wallet-" + title).trimAll();
     var div = $("#"+walletDivId);
-    var div_button = $("#"+walletDivId +" .glyphicon-plus");
-    div_button.before('<hr>');
+    var div_button = $("#"+walletDivId +" .form-group");
     div_button.before("<p>"+currencyCode+'<span class="pull-right">'+value+'</span>');
+    div_button.before('<hr>');
     showBlock(div);
 };
 
@@ -236,6 +301,7 @@ var refreshWallets = function () {
     getAllWallets();
     var select = $("#id_wallets");
     select.empty();
+    getWalletsTitles();
 };
 
 var getAllWallets = function () {
@@ -244,9 +310,10 @@ var getAllWallets = function () {
       type: "POST",
       dataType: "json",
       success: function (data) {
-          addWalletsToHtml(data)
+          addWalletsToHtml(data);
+          addWalletCurrency();
       }
-  })
+  });
 };
 
 $(document).ready(getAllWallets());

@@ -33,6 +33,28 @@ def add_transaction(user, currency_type, name, value):
     currency.save()
 
 
+def validate_new_wallet_data(title, code, value, request):
+    error_msg = {}
+    try:
+        float(value)
+    except ValueError:
+        error_msg['sum'] = 'Currency must be a numeric'
+
+    if len(code) != 3:
+        error_msg['type'] = 'Enter correct currency code'
+
+    if title == '':
+        error_msg['name'] = 'Title can not be empty'
+
+    if Wallet.objects.filter(user=request.user, title=title):
+        error_msg['name'] = 'You are already have this wallet'
+
+    if error_msg:
+        error_msg['status'] = '400'
+
+    return error_msg
+
+
 def add_wallet(request):
     if request.method == 'POST':
         if request.is_ajax():
@@ -40,23 +62,7 @@ def add_wallet(request):
             currency_type = request.POST.get('type')
             value = request.POST.get('sum')
 
-            error_msg = {}
-            try:
-                float(value)
-            except ValueError:
-                error_msg['sum'] = 'Currency must be a numeric'
-
-            if len(currency_type) != 3:
-                error_msg['type'] = 'Enter correct currency code'
-
-            if name == '':
-                error_msg['name'] = 'Title can not be empty'
-
-            if Wallet.objects.filter(user=request.user, title=name):
-                error_msg['name'] = 'You are already have this wallet'
-
-            if error_msg:
-                error_msg['status'] = '400'
+            error_msg = validate_new_wallet_data(name, currency_type, value, request)
 
             if not error_msg:
                 add_transaction(request.user,
@@ -65,6 +71,63 @@ def add_wallet(request):
                                 value)
 
                 error_msg['status'] = '200'
+            return HttpResponse(json.dumps(error_msg),
+                                content_type="application/json")
+
+    return HttpResponseRedirect('/')
+
+
+def validate_new_currency_data(title, code, value, request):
+    error_msg = {}
+
+    try:
+        float(value)
+    except ValueError:
+        error_msg['sum'] = 'Currency must be a numeric'
+
+    if len(code) != 3:
+        error_msg['type'] = 'Enter correct currency code'
+
+    wallet = Wallet.objects.filter(user=request.user, title=title)
+    accounts = AccountStatement.objects.filter(wallet=wallet)
+    for account in accounts:
+        if Currency.objects.filter(value=account, code=code):
+            print("!!!!!")
+            error_msg['type'] = 'You are already have this currency'
+
+    if error_msg:
+        error_msg['status'] = '400'
+
+    return error_msg
+
+
+def add_new_currency_transaction(title, code, value, request):
+    wallet = Wallet.objects.get(user=request.user, title=title)
+
+    statement = AccountStatement(value=value)
+    statement.wallet = wallet
+    statement.save()
+
+    currency = Currency(code=code)
+    currency.value = statement
+    currency.save()
+
+
+def add_new_currency(request):
+    if request.method == 'POST':
+        if request.is_ajax():
+            title = request.POST.get('title')
+            code = request.POST.get('code')
+            value = request.POST.get('sum')
+            print("!! ", title, "!!", value, "!!", code)
+
+            error_msg = validate_new_currency_data(title, code, value, request)
+
+            if not error_msg:
+                add_new_currency_transaction(title, code, value, request)
+
+                error_msg['status'] = '200'
+
             return HttpResponse(json.dumps(error_msg),
                                 content_type="application/json")
 
@@ -87,11 +150,6 @@ def return_codes_by_wallet_title(request):
             wallet = Wallet.objects.filter(user=request.user, title=title)
             accounts = AccountStatement.objects.filter(wallet=wallet)
             codes = get_values_dict(accounts)
-
-
-            print(codes)
-
-
             return HttpResponse(json.dumps(codes), content_type="application/json")
     return HttpResponseRedirect('/')
 
@@ -108,12 +166,12 @@ def add_operation(request):
 
 
 def get_values_dict(accounts):
-    dict = {}
+    accounts_dict = {}
     for account in accounts:
         code = Currency.objects.filter(value=account)
         for value in code:
-            dict[str(account)] = str(value)
-    return dict
+            accounts_dict[str(account)] = str(value)
+    return accounts_dict
 
 
 def get_all_wallets(request):
