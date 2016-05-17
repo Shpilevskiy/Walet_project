@@ -8,7 +8,7 @@ from .forms import LoginForm, RegistrationForm
 def index(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect('/mywallet')
-    return render(request, 'auths/index.html', {'RegForm': RegistrationForm, 'LoginForm': LoginForm})
+    return render(request, 'auths/index.html', {'RegForm': RegistrationForm, 'LoginForm': LoginForm, 'mainDisabled': False, 'authDisabled': True, 'regDisabled': True})
 
 
 def registration(request):
@@ -19,7 +19,8 @@ def registration(request):
         password = request.POST['password']
         User.objects.create_user(username, email, password)
         return HttpResponseRedirect('/')
-    return render(request, 'auths/index.html', {'RegForm': RegistrationForm, 'LoginForm': LoginForm})
+    return render(request, 'auths/index.html', {'RegForm': form, 'LoginForm': LoginForm,
+                                                'mainDisabled': True, 'authDisabled': True, 'regDisabled': False})
 
 
 def authentication(request):
@@ -36,5 +37,6 @@ def authentication(request):
             return HttpResponseRedirect('/')
     else:
         # NEED: Return an 'invalid login' error message.
-        return HttpResponseRedirect('/')
+        return render(request, 'auths/index.html', {'RegForm': RegistrationForm, 'LoginForm': form,
+                                                    'mainDisabled': True, 'authDisabled': False, 'regDisabled': True})
 

@@ -56,29 +56,43 @@
 
     <div class="carousel-inner" role="listbox">
         <div class="item active">
+                <container>
+                    {% if mainDisabled %}
+                        <div id="home" class="disabled carousel-caption">
+                    {% else %}
+                        <div id="home" class="carousel-caption">
+                    {% endif %}
 
-                <div id="home" class="carousel-caption">
-                    <h1>Simple wallet, complex needs</h1>
-                    <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                    <p><a id="reg-button" class="btn btn-lg btn-success" role="button">Sign up</a> <a id="log-btn" class="btn btn-lg btn-danger" role="button">Sign in</a></p>
-                </div>
-
-                <div id="login-form" class="auth-content carousel-caption">
-                    <h1>Authorization</h1>
-                    <div class="form-group input-form">
-                        {% csrf_token %}
-                        {% crispy LoginForm %}
+                        <h1>Simple wallet, complex needs</h1>
+                        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                        <p><a id="reg-button" class="btn btn-lg btn-success" role="button">Sign up</a> <a id="log-btn" class="btn btn-lg btn-danger" role="button">Sign in</a></p>
                     </div>
-                </div>
 
-                <div id="registration-form" class="reg-content carousel-caption">
-                    <h1>Registration</h1>
-                    <div class="form-group input-form">
-                        {% csrf_token %}
-                        {% crispy RegForm %}
+                    {% if authDisabled %}
+                       <div id="login-form" class="disabled carousel-caption">
+                    {% else %}
+                       <div id="login-form" class="carousel-caption">
+                    {% endif %}
+                        <h1>Authorization</h1>
+                        <div class="form-group input-form">
+                            {% csrf_token %}
+                            {% crispy LoginForm %}
+                        </div>
                     </div>
-                </div>
 
+
+                    {% if regDisabled %}
+                       <div id="registration-form" class="disabled carousel-caption">
+                    {% else %}
+                       <div id="registration-form" class="carousel-caption">
+                    {% endif %}
+                        <h1>Registration</h1>
+                        <div class="form-group input-form">
+                            {% csrf_token %}
+                            {% crispy RegForm %}
+                        </div>
+                    </div>
+                </container>
 
         </div>
         <div class="item">
@@ -103,7 +117,7 @@
                 <div class="carousel-caption">
                     <h1>Contact</h1>
                     <p class="lead">arioxon@gmail.com</p>
-                    <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up</a> <a class="btn btn-lg btn-danger" href="#" role="button">Sign in</a></p>
+                    <p class="lead">github.com/Shpilevskiy</p>
                 </div>
             </div>
         </div>

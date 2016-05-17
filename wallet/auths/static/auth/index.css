@@ -1,6 +1,7 @@
 
 /* Space out content a bit */
 body {
+    background-image: url(http://index.gblackstreaming.com/images/bg.jpg);
     padding-top: 20px;
     padding-bottom: 20px;
 }
@@ -75,12 +76,11 @@ body {
     height: 55%;
 }
 
-.auth-content {
+.disabled {
     display: none;
     opacity: 0;
 }
 
-.reg-content {
-    display: none;
-    opacity: 0;
+.background {
+    background-image: url("http://flauper.ru/i/2/bumaga_belyy_myatyy_list_seryy_chernyy_1600x1200.jpg");
 }

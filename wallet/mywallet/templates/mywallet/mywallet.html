@@ -104,6 +104,7 @@
                     </tbody>
                 </table>
                  <div>
+                     {%if operations%}
                         <span class="step-links">
                             {% if operations.has_previous %}
                                 <a href="?page={{ operations.previous_page_number }}">previous</a>
@@ -116,6 +117,7 @@
                             {% if operations.has_next %}
                                 <a href="?page={{ operations.next_page_number }}">next</a>
                             {% endif %}
+                         {%endif%}
                         </span>
                     </div>
             </div>
