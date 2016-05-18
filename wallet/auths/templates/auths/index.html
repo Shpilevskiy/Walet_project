@@ -69,11 +69,11 @@
                     </div>
 
                     {% if authDisabled %}
-                       <div id="login-form" class="disabled carousel-caption">
+                       <div id="login-form" class="disabled carousel-capt">
                     {% else %}
-                       <div id="login-form" class="carousel-caption">
+                       <div id="login-form" class="carousel-capt">
                     {% endif %}
-                        <h1>Authorization</h1>
+                        <h1 class="shadow-text">Authorization</h1>
                         <div class="form-group input-form">
                             {% csrf_token %}
                             {% crispy LoginForm %}
@@ -82,11 +82,11 @@
 
 
                     {% if regDisabled %}
-                       <div id="registration-form" class="disabled carousel-caption">
+                       <div id="registration-form" class="disabled carousel-capt">
                     {% else %}
-                       <div id="registration-form" class="carousel-caption">
+                       <div id="registration-form" class="carousel-capt">
                     {% endif %}
-                        <h1>Registration</h1>
+                        <h1 class="shadow-text">Registration</h1>
                         <div class="form-group input-form">
                             {% csrf_token %}
                             {% crispy RegForm %}

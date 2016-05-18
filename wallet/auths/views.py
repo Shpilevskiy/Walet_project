@@ -12,6 +12,8 @@ def index(request):
 
 
 def registration(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect('/mywallet')
     form = RegistrationForm(request.POST or None)
     if form.is_valid():
         username = request.POST['username']
@@ -24,10 +26,13 @@ def registration(request):
 
 
 def authentication(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect('/mywallet')
+
     form = LoginForm(request.POST or None)
     if form.is_valid():
-        username = request.POST['username']
-        password = request.POST['password']
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)

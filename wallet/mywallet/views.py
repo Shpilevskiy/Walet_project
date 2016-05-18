@@ -6,9 +6,7 @@ from .forms import AddOperationForm
 import simplejson as json
 from django.contrib.auth import logout
 from datetime import datetime
-
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render
 
 def mywallet(request):
     if request.user.is_authenticated():

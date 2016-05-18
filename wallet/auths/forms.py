@@ -2,10 +2,13 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout
 from crispy_forms.bootstrap import Field, FormActions
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label='Username', required=True)
-    password = forms.CharField(label='Password', required=True, widget=forms.PasswordInput)
+    username = forms.CharField(label='username', required=False, )
+    password = forms.CharField(label='password', required=False, widget=forms.PasswordInput)
 
     helper = FormHelper()
     helper.form_method = 'POST'
@@ -18,6 +21,23 @@ class LoginForm(forms.Form):
         # To do: add back to menu button (registration too)
         FormActions(Submit('login', 'Sign in', css_class='btn-primary'))
     )
+
+    def clean(self):
+        cleaned_data = super(LoginForm, self).clean()
+
+        if 'username' not in cleaned_data:
+            raise forms.ValidationError("Empty fields")
+
+        if 'password' not in cleaned_data:
+            raise forms.ValidationError("Empty fields")
+
+        username = cleaned_data['username']
+        password = cleaned_data['password']
+        print(username,password)
+        user = authenticate(username=username, password=password)
+        if user is None:
+            raise forms.ValidationError("Incorrect username or password")
+        return cleaned_data
 
 
 class RegistrationForm(forms.Form):
@@ -35,3 +55,15 @@ class RegistrationForm(forms.Form):
         Field('password', placeholder='Password', css_class='form-control'),
         FormActions(Submit('sign up', 'Sign up', css_class='btn-primary'))
     )
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Email already exists")
+        return email
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("username already exists")
+        return username
