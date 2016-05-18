@@ -12,15 +12,14 @@ from django.shortcuts import render
 
 def mywallet(request):
     if request.user.is_authenticated():
-        operation_list = DiffOperation.objects.filter(user=request.user)
+        operation_list = DiffOperation.objects.filter(user=request.user).order_by('date')
         paginator = Paginator(operation_list, 6)
-
         page = request.GET.get('page')
         try:
              operations = paginator.page(page)
         except PageNotAnInteger:
             # If page is not an integer, deliver first page.
-            operations = paginator.page(1)
+            operations = paginator.page(paginator.num_pages)
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             operations = paginator.page(paginator.num_pages)
