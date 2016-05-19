@@ -8,13 +8,14 @@ from django.contrib.auth import logout
 from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
 def mywallet(request):
     if request.user.is_authenticated():
         operation_list = DiffOperation.objects.filter(user=request.user).order_by('date')
         paginator = Paginator(operation_list, 6)
         page = request.GET.get('page')
         try:
-             operations = paginator.page(page)
+            operations = paginator.page(page)
         except PageNotAnInteger:
             # If page is not an integer, deliver first page.
             operations = paginator.page(paginator.num_pages)
@@ -109,8 +110,8 @@ def add_new_operation(request):
                 account = AccountStatement.objects.get(wallet=wallet, value=select_value)
                 currency = Currency.objects.get(value=account, code=code)
 
-                print(operation_type, operation_title, operation_value, wallet_title, code, date,)
-                print("!!!",wallet,"!!",account,"!!",currency)
+                print(operation_type, operation_title, operation_value, wallet_title, code, date, )
+                print("!!!", wallet, "!!", account, "!!", currency)
 
                 new_operation = DiffOperation(title=operation_title, date=date,
                                               sum=operation_value, operation_type=operation_type)
@@ -148,7 +149,7 @@ def validate_add_new_operation_data(operation_type, operation_title, operation_v
     try:
         print(date)
         datetime.strptime(date, "%Y-%m-%d")
-    except ValueError: #find correct exception
+    except ValueError:  # find correct exception
         error_msg['date'] = 'Wrong date'
 
     wallet = Wallet.objects.filter(user=request.user, title=wallet_title)
