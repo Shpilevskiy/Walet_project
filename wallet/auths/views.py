@@ -14,6 +14,7 @@ def index(request):
 def registration(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect('/mywallet')
+
     form = RegistrationForm(request.POST or None)
     if form.is_valid():
         username = request.POST['username']
@@ -37,9 +38,6 @@ def authentication(request):
         if user is not None:
             login(request, user)
             return HttpResponseRedirect('/mywallet')
-        else:
-            # NEED: Return a 'disabled account' error message
-            return HttpResponseRedirect('/')
     else:
         # NEED: Return an 'invalid login' error message.
         return render(request, 'auths/index.html', {'RegForm': RegistrationForm, 'LoginForm': form,

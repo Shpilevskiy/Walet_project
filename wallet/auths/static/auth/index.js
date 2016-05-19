@@ -5,21 +5,33 @@
     });
 
 
-    var login_btn = $('.carousel-inner #log-btn');
-    var registration_btn = $('.carousel-inner #reg-button');
+    var loginBtn = $('.carousel-inner #log-btn');
+    var registrationBtn = $('.carousel-inner #reg-button');
+    var loginBackBtn = $('.carousel-inner #button-id-auth-back');
+    var registrationBackBtn = $('.carousel-inner #button-id-reg-back');
+
     var home = $('#home');
-    var reg_form = $('#registration-form');
-    var login_from = $('#login-form');
+    var regForm = $('#registration-form');
+    var loginFrom = $('#login-form');
 
-    registration_btn.click(function() {
-        swap_block(home, reg_form)
+
+    registrationBtn.click(function() {
+        swapBlocks(home, regForm)
     });
 
-    login_btn.click(function(){
-        swap_block(home, login_from)
+    loginBtn.click(function(){
+        swapBlocks(home, loginFrom)
     });
 
-function swap_block(active, passive){
+    loginBackBtn.click(function () {
+       swapBlocks(loginFrom, home)
+    });
+
+    registrationBackBtn.click(function () {
+       swapBlocks(regForm, home)
+    });
+
+function swapBlocks(active, passive){
     active.animate({
         opacity: 0
     });

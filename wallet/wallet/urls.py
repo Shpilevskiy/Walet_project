@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # We won't be able to capture /admin/ urls otherwise
     url(r'^$', index, name="home"),
-    url(r'^registration/', registration, name="log on"),
-    url(r'^authentication/', authentication, name="log in"),
+    url(r'^registration/', registration, name="sign up"),
+    url(r'^authentication/', authentication, name="sign in"),
     url(r'mywallet/', include('mywallet.urls')),
 ]
