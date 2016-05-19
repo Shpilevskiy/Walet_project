@@ -25,15 +25,8 @@ class LoginForm(forms.Form):
     def clean(self):
         cleaned_data = super(LoginForm, self).clean()
 
-        if 'username' not in cleaned_data:
-            raise forms.ValidationError("Empty fields")
-
-        if 'password' not in cleaned_data:
-            raise forms.ValidationError("Empty fields")
-
         username = cleaned_data['username']
         password = cleaned_data['password']
-        print(username,password)
         user = authenticate(username=username, password=password)
         if user is None:
             raise forms.ValidationError("Incorrect username or password")
