@@ -5,10 +5,13 @@ from django.contrib.auth import authenticate, login
 from .forms import LoginForm, RegistrationForm
 from django.contrib import messages
 
+
 def index(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect('/mywallet')
-    return render(request, 'auths/index.html', {'RegForm': RegistrationForm, 'LoginForm': LoginForm, 'mainDisabled': False, 'authDisabled': True, 'regDisabled': True})
+    return render(request, 'auths/index.html',
+                  {'RegForm': RegistrationForm, 'LoginForm': LoginForm, 'mainDisabled': False, 'authDisabled': True,
+                   'regDisabled': True})
 
 
 def registration(request):
@@ -23,7 +26,7 @@ def registration(request):
         User.objects.create_user(username, email, password)
         messages.success(request, 'Account was successfully created, please, try to Sign in')
         return render(request, 'auths/index.html', {'RegForm': RegistrationForm, 'LoginForm': LoginForm,
-                                                'mainDisabled': False, 'authDisabled': True, 'regDisabled': True})
+                                                    'mainDisabled': False, 'authDisabled': True, 'regDisabled': True})
 
     return render(request, 'auths/index.html', {'RegForm': form, 'LoginForm': LoginForm,
                                                 'mainDisabled': True, 'authDisabled': True, 'regDisabled': False})
@@ -45,4 +48,3 @@ def authentication(request):
         # NEED: Return an 'invalid login' error message.
         return render(request, 'auths/index.html', {'RegForm': RegistrationForm, 'LoginForm': form,
                                                     'mainDisabled': True, 'authDisabled': False, 'regDisabled': True})
-

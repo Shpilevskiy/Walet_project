@@ -343,7 +343,7 @@ var createWalletDiv = function (title) {
     $("#add-button-div").before(div);
     div = $("#"+walletDivId);
     div.addClass("col-md-2 wallet-block wallet-frame disabled");
-    div.append('<h4 id="wallet-title">'+title+'<a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>');
+    div.append('<h4 id="wallet-title" class="text-overflow">'+title+'<a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>');
     div.append('<hr>');
     div.append('<div id="new-currency-"'+title+' class="form-group disabled">  <p> <input id="add-currency-input" type="text" class=" form-control input-sm" placeholder="Currency (USD,EUR,etc.)"> </p> <p><input id="add-value-input" type="text" class=" form-control input-sm" placeholder="Value"> </p> <p><a class="btn-padding btn  glyphicon glyphicon-ok center-block"></a></p> </div>');
     div.append(' <a class=" btn glyphicon glyphicon-plus center-block"></a>');

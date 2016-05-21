@@ -190,3 +190,9 @@ hr {
     color: #000000;
     height: 1px;
 }
+
+.text-overflow {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
