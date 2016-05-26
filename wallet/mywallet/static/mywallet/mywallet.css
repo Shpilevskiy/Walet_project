@@ -196,3 +196,7 @@ hr {
     white-space: nowrap;
     overflow: hidden;
 }
+
+.edit-title {
+    margin-top: 10px;
+}

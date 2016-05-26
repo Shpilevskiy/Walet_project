@@ -284,11 +284,47 @@ String.prototype.trimAll=function()
 };
 
 
+var editWalletTitle = function () {
+    var editButton = $(".wallet-block .glyphicon-pencil");
+    editButton.click(function () {
+        editButton = $(editButton[editButton.index(this)]);
+        var title = editButton.parents("#wallet-title");
+        var textTitle = title.find("h4").text();
+        var editField = title.siblings("#edit-title");
+        var titleInput = editField.find("#title-input");
+        var submitBtn = editField.find('a:last');
+        hideBlock(title);
+        showBlock(editField);
+        console.log(textTitle);
+        submitBtn.click(function () {
+            $.ajax({
+                url: "edit-wallet-title/",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    newTitle: titleInput.val(),
+                    oldTitle: textTitle
+                },
+                success: function (data) {
+                    console.log(data);
+                   if('title' in data){
+                       makeFieldBad(titleInput.parent(), titleInput, data.title)
+                    }
+                    if(data.status == '200')
+                    {
+                        refreshWallets();
+                    }
+                }
+            })
+        })
+    })
+};
+
 var addWalletCurrency = function () {
     var addButton = $(".wallet-block .glyphicon-plus");
     addButton.click(function () {
         var btn = $(addButton[addButton.index(this)]);
-        var form = btn.siblings(".disabled");
+        var form = btn.siblings("#new-currency");
         var titleForm = btn.siblings("h4");
         showBlock(form);
         hideBlock(btn);
@@ -343,9 +379,10 @@ var createWalletDiv = function (title) {
     $("#add-button-div").before(div);
     div = $("#"+walletDivId);
     div.addClass("col-md-2 wallet-block wallet-frame disabled");
-    div.append('<h4 id="wallet-title" class="text-overflow">'+title+'<a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4>');
+    div.append('<div id="wallet-title"> <h4 class="text-overflow">'+title+'<a class="btn-padding btn pull-right glyphicon glyphicon-pencil"></a></h4> </div>');
+    div.append('<div id="edit-title" class="disabled edit-title"> <p><input  type="text" id="title-input" class=" form-control input-sm" placeholder="Wallet title"></p>  <a class="btn-padding btn  glyphicon glyphicon-ok center-block"></a> </div>');
     div.append('<hr>');
-    div.append('<div id="new-currency-"'+title+' class="form-group disabled">  <p> <input id="add-currency-input" type="text" class=" form-control input-sm" placeholder="Currency (USD,EUR,etc.)"> </p> <p><input id="add-value-input" type="text" class=" form-control input-sm" placeholder="Value"> </p> <p><a class="btn-padding btn  glyphicon glyphicon-ok center-block"></a></p> </div>');
+    div.append('<div id="new-currency" class="form-group disabled">  <p> <input id="add-currency-input" type="text" class=" form-control input-sm" placeholder="Currency (USD,EUR,etc.)"> </p> <p><input id="add-value-input" type="text" class=" form-control input-sm" placeholder="Value"> </p> <p><a class="btn-padding btn  glyphicon glyphicon-ok center-block"></a></p> </div>');
     div.append(' <a class=" btn glyphicon glyphicon-plus center-block"></a>');
 };
 
@@ -384,7 +421,9 @@ var getAllWallets = function () {
       dataType: "json",
       success: function (data) {
           addWalletsToHtml(data);
+          editWalletTitle();
           addWalletCurrency();
+
       }
   });
 };

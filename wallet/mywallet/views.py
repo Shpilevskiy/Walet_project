@@ -215,6 +215,27 @@ def add_new_currency(request):
     return HttpResponseRedirect('/')
 
 
+def edit_wallet_title(request):
+    if request.method == "POST":
+        if request.is_ajax():
+            old_title = request.POST.get('oldTitle')
+            new_title = request.POST.get('newTitle')
+            print(old_title)
+            if new_title != '':
+                error_msg = {'status': '200'}
+                wallet = Wallet.objects.get(user=request.user, title=old_title)
+                print(wallet)
+                wallet.title = new_title
+                wallet.save()
+                return HttpResponse(json.dumps(error_msg),
+                                    content_type="application/json")
+            else:
+                error_msg = {'title': 'Title can not be empty'}
+                return HttpResponse(json.dumps(error_msg),
+                                    content_type="application/json")
+    return HttpResponseRedirect('/')
+
+
 def get_wallets_titles(request):
     if request.method == 'POST':
         if request.is_ajax():
@@ -233,17 +254,6 @@ def return_codes_by_wallet_title(request):
             codes = get_values_dict(accounts)
             return HttpResponse(json.dumps(codes), content_type="application/json")
     return HttpResponseRedirect('/')
-
-
-def add_operation(request):
-    form = AddOperationForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return {'success': True}
-    else:
-        request_context = RequestContext(request)
-        form_html = render_crispy_form(form, context=request_context)
-        return {'success': False, 'AddOperationForm': form_html}
 
 
 def get_values_dict(accounts):
