@@ -287,8 +287,8 @@ String.prototype.trimAll=function()
 var editWalletTitle = function () {
     var editButton = $(".wallet-block .glyphicon-pencil");
     editButton.click(function () {
-        editButton = $(editButton[editButton.index(this)]);
-        var title = editButton.parents("#wallet-title");
+        var clickedButton = $(editButton[editButton.index(this)]);
+        var title = clickedButton.parents("#wallet-title");
         var textTitle = title.find("h4").text();
         var editField = title.siblings("#edit-title");
         var titleInput = editField.find("#title-input");
@@ -306,7 +306,6 @@ var editWalletTitle = function () {
                     oldTitle: textTitle
                 },
                 success: function (data) {
-                    console.log(data);
                    if('title' in data){
                        makeFieldBad(titleInput.parent(), titleInput, data.title)
                     }
