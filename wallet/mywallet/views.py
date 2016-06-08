@@ -252,13 +252,23 @@ class GetWalletTitles(View):
 
 
 class GetCodes(View):
+    @staticmethod
+    def get_values(accounts):
+        accounts_dict = {}
+        for account in accounts:
+            code = Currency.objects.filter(value=account)
+            for value in code:
+                accounts_dict[str(account)] = str(value)
+        return accounts_dict
+
+
     def get(self, request, **kwargs):
         if request.method == 'GET':
             if request.is_ajax():
                 title = request.GET.get('walletTitle')
                 wallet = Wallet.objects.filter(user=request.user, title=title)
                 accounts = AccountStatement.objects.filter(wallet=wallet)
-                codes = get_values_dict(accounts)
+                codes = self.get_values(accounts)
                 return HttpResponse(json.dumps(codes), content_type="application/json")
         return HttpResponseRedirect('/')
 
