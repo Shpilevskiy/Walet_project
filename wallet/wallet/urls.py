@@ -16,13 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from auths.views import index, registration, authentication
+from auths.views import IndexView, Registration, Authentication
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # We won't be able to capture /admin/ urls otherwise
-    url(r'^$', index, name="home"),
-    url(r'^registration/', registration, name="sign up"),
-    url(r'^authentication/', authentication, name="sign in"),
+    url(r'^$', IndexView.as_view(), name="home"),
+    url(r'^registration/', Registration.as_view(), name="sign up"),
+    url(r'^authentication/', Authentication.as_view(), name="sign in"),
     url(r'mywallet/', include('mywallet.urls')),
 ]
