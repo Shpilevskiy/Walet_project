@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, RegistrationForm
 from django.contrib import messages
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView
 
 
 class IndexView(TemplateView):

@@ -143,7 +143,7 @@ $(function(){
 var getWalletsTitles = function () {
     $.ajax({
         url: "get-wallets-titles/",
-        type: "POST",
+        type: "GET",
         dataType: 'json',
         success: function (data) {
             var selectWallets = $("#id_wallets");
@@ -161,7 +161,7 @@ $(document).ready(getWalletsTitles());
 var getSelectWalletCodes = function (title) {
     $.ajax({
             url: "get-codes-by-wallet-title/",
-            type: "POST",
+            type: "GET",
             data: {
                 walletTitle: title
             },
@@ -416,7 +416,7 @@ var refreshWallets = function () {
 var getAllWallets = function () {
   $.ajax({
       url:"get-all-wallets/",
-      type: "POST",
+      type: "GET",
       dataType: "json",
       success: function (data) {
           addWalletsToHtml(data);
