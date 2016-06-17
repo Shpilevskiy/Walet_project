@@ -1,11 +1,20 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpResponse
-from .models import Wallet, Currency, AccountStatement, DiffOperation
-import simplejson as json
 from django.contrib.auth import logout
-from datetime import datetime
+from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import TemplateView, View
+
+from .models import Wallet, Currency, AccountStatement, DiffOperation
+
+from datetime import datetime
+import simplejson as json
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+from rest_framework.decorators import detail_route
+from .serializers import WalletSerializer
 
 
 class IndexView(TemplateView):
@@ -107,7 +116,6 @@ class NewOperation(View):
             error_msg['type'] = 'Wrong type operation'
 
         try:
-            print(date)
             datetime.strptime(date, "%Y-%m-%d")
         except ValueError:  # find correct exception
             error_msg['date'] = 'Wrong date'
@@ -204,7 +212,6 @@ class NewCurrency(View):
                 title = request.POST.get('title')
                 code = request.POST.get('code')
                 value = request.POST.get('sum')
-                print("!! ", title, "!!", value, "!!", code)
 
                 error_msg = self.validate_data(title, code, value, request)
 
@@ -225,11 +232,9 @@ class EditWalletTitle(View):
             if request.is_ajax():
                 old_title = request.POST.get('oldTitle')
                 new_title = request.POST.get('newTitle')
-                print(old_title)
                 if new_title != '' and len(new_title) <= 20:
                     error_msg = {'status': '200'}
                     wallet = Wallet.objects.get(user=request.user, title=old_title)
-                    print(wallet)
                     wallet.title = new_title
                     wallet.save()
                     return HttpResponse(json.dumps(error_msg),
@@ -261,7 +266,6 @@ class GetCodes(View):
                 accounts_dict[str(account)] = str(value)
         return accounts_dict
 
-
     def get(self, request, **kwargs):
         if request.method == 'GET':
             if request.is_ajax():
@@ -273,7 +277,32 @@ class GetCodes(View):
         return HttpResponseRedirect('/')
 
 
-class GetWallets(View):
+# class GetWallets(View):
+#     @staticmethod
+#     def get_values(accounts):
+#         accounts_dict = {}
+#         for account in accounts:
+#             code = Currency.objects.filter(value=account)
+#             for value in code:
+#                 accounts_dict[str(account)] = str(value)
+#         return accounts_dict
+#
+#     def get(self, request, **kwargs):
+#         if request.method == 'GET':
+#             if request.is_ajax():
+#                 result_dict = {}
+#                 wallets = Wallet.objects.filter(user=request.user)
+#                 for wallet in wallets:
+#                     accounts = AccountStatement.objects.filter(wallet=wallet)
+#                     result_dict[str(wallet)] = self.get_values(accounts)
+#                 return HttpResponse(json.dumps(result_dict), content_type="application/json")
+#         return HttpResponseRedirect('/')
+
+
+class WalletList(APIView):
+    authentication_classes = (authentication.CsrfViewMiddleware,)
+    permission_classes = (permissions.IsAuthenticated,)
+
     @staticmethod
     def get_values(accounts):
         accounts_dict = {}
@@ -283,13 +312,10 @@ class GetWallets(View):
                 accounts_dict[str(account)] = str(value)
         return accounts_dict
 
-    def get(self, request, **kwargs):
-        if request.method == 'GET':
-            if request.is_ajax():
-                result_dict = {}
-                wallets = Wallet.objects.filter(user=request.user)
-                for wallet in wallets:
-                    accounts = AccountStatement.objects.filter(wallet=wallet)
-                    result_dict[str(wallet)] = self.get_values(accounts)
-                return HttpResponse(json.dumps(result_dict), content_type="application/json")
-        return HttpResponseRedirect('/')
+    def get(self, request, format=None):
+        result_dict = {}
+        wallets = Wallet.objects.filter(user=request.user)
+        for wallet in wallets:
+            accounts = AccountStatement.objects.filter(wallet=wallet)
+            result_dict[str(wallet)] = self.get_values(accounts)
+        return Response(result_dict)

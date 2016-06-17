@@ -243,7 +243,6 @@ var addNewOperation = function () {
                 date: date.val()
             },
             success: function (data) {
-                console.log(data);
                  if('sum' in data){
                      makeFieldBad(sumForm, sum, data.sum)
                  }
@@ -295,7 +294,6 @@ var editWalletTitle = function () {
         var submitBtn = editField.find('a:last');
         hideBlock(title);
         showBlock(editField);
-        console.log(textTitle);
         submitBtn.click(function () {
             $.ajax({
                 url: "edit-wallet-title/",
@@ -324,7 +322,7 @@ var addWalletCurrency = function () {
     addButton.click(function () {
         var btn = $(addButton[addButton.index(this)]);
         var form = btn.siblings("#new-currency");
-        var titleForm = btn.siblings("h4");
+        var titleForm = btn.siblings("#wallet-title");
         showBlock(form);
         hideBlock(btn);
         var submitBtn = form.find('p:last');
@@ -332,7 +330,7 @@ var addWalletCurrency = function () {
         var codeForm = form.find('#add-currency-input');
         var sumForm = form.find('#add-value-input');
 
-        var title = titleForm.text();
+        var title = titleForm.find('h4').text();
 
         submitBtn.click(function () {
             var code = codeForm.val();
@@ -415,14 +413,13 @@ var refreshWallets = function () {
 
 var getAllWallets = function () {
   $.ajax({
-      url:"get-all-wallets/",
+      url:"wallets/",
       type: "GET",
       dataType: "json",
       success: function (data) {
           addWalletsToHtml(data);
           editWalletTitle();
           addWalletCurrency();
-
       }
   });
 };

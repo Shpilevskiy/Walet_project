@@ -20,7 +20,6 @@ from auths.views import IndexView, Registration, Authentication
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    # We won't be able to capture /admin/ urls otherwise
     url(r'^$', IndexView.as_view(), name="home"),
     url(r'^registration/', Registration.as_view(), name="sign up"),
     url(r'^authentication/', Authentication.as_view(), name="sign in"),
