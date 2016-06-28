@@ -80,7 +80,7 @@ class NewWallet(View):
         if request.method == 'POST':
             if request.is_ajax():
                 name = request.POST.get('name')
-                currency_type = request.POST.get('type')
+                currency_type = request.POST.get('type').upper()
                 value = request.POST.get('sum')
 
                 error_msg = self.validate_data(name, currency_type, value, request)
@@ -174,7 +174,6 @@ class NewCurrency(View):
     @staticmethod
     def validate_data(title, code, value, request):
         error_msg = {}
-
         try:
             float(value)
         except ValueError:
@@ -210,7 +209,7 @@ class NewCurrency(View):
         if request.method == 'POST':
             if request.is_ajax():
                 title = request.POST.get('title')
-                code = request.POST.get('code')
+                code = request.POST.get('code').upper()
                 value = request.POST.get('sum')
 
                 error_msg = self.validate_data(title, code, value, request)
